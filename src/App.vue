@@ -1,28 +1,38 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <button v-on:click="fetchTranslations">
+      kek
+    </button>
+
+    <ul v-for="translation in translations" v-bind:key="translation.id">
+      <Translation v-bind:translation="translation"></Translation>
+    </ul>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Translation from './components/Translation.vue'
+import axios from 'axios'
+
+function fetchTranslations() {
+  axios
+  .get('http://coincoin.me/duolingros/api/translations')
+  .then((response) => window.console.log(response))
+}
 
 export default {
   name: 'app',
+  data() {
+    return {
+      translations: [],
+    };
+  },
   components: {
-    HelloWorld
+    Translation,
+  },
+  methods: {
+    fetchTranslations,
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
