@@ -1,5 +1,9 @@
 <template>
   <div id="app">
+    <NavBar>
+      <Login></Login>
+    </NavBar>
+
     <button v-on:click="fetchTranslations">
       kek
     </button>
@@ -12,6 +16,8 @@
 
 <script>
 import Translation from './components/Translation.vue'
+import NavBar from './components/nav/NavBar.vue'
+import Login from './components/Login.vue'
 import axios from 'axios'
 
 function fetchTranslations() {
@@ -29,6 +35,8 @@ export default {
   },
   components: {
     Translation,
+    NavBar,
+    Login,
   },
   methods: {
     fetchTranslations,
