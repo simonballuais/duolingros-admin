@@ -1,5 +1,16 @@
 <template>
-  <form class="form-inline mt-2 mt-md-0">
+  <form class=""
+        @submit.prevent="handleSubmit">
     <slot></slot>
   </form>
 </template>
+
+<script>
+export default {
+  methods: {
+    handleSubmit() {
+      this.$emit('submit')
+    }
+  }
+}
+</script>

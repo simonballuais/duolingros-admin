@@ -1,12 +1,14 @@
 <template>
-  <input class="form-control mr-sm-2"
+  <input class="form-control"
          :type="type"
          :placeholder="placeholder"
          :aria-label="placeholder"
+         v-model="value"
+         @input="$emit('input', value)"
          >
 </template>
 
-<script>
+  <script>
 export default {
   props: {
     'placeholder': {
@@ -17,6 +19,11 @@ export default {
       type: String,
       default: 'text',
     },
+  },
+  data() {
+    return{
+      'value': '',
+    }
   },
 }
 </script>
