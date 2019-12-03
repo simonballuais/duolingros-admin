@@ -1,19 +1,27 @@
 <template>
-  <InlineForm v-on:submit="handleSubmit">
-    <div class="form-group">
-      <Input v-model="username" placeholder="Login" />
-      <small v-if="status.invalidCredentials"
-             class="form-text text-danger">
-        Invalid credentials
-      </small>
+  <div class="jumbotron">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6 offset-sm-3">
+          <InlineForm v-on:submit="handleSubmit">
+          <div class="form-group">
+            <Input v-model="username" placeholder="Login" />
+            <small v-if="status.invalidCredentials"
+                   class="form-text text-danger">
+              Invalid credentials
+            </small>
+          </div>
+          <div class="form-group">
+            <Input v-model="password" placeholder="Password" type="password" />
+          </div>
+          <div class="form-group">
+            <Submit label="Go" />
+          </div>
+          </InlineForm>
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <Input v-model="password" placeholder="Password" type="password" />
-    </div>
-    <div class="form-group">
-      <Submit label="Go" />
-    </div>
-  </InlineForm>
+  </div>
 </template>
 
 <script>
