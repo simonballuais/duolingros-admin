@@ -59,6 +59,13 @@ export default {
         this.login({username, password})
       }
     }
+  },
+  created() {
+    this.$store.subscribe((mutation) => {
+      if (mutation.type === 'security/loginSuccess') {
+        this.$router.push({path: 'bidule'})
+      }
+    });
   }
 }
 </script>

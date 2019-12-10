@@ -7,6 +7,7 @@ let router = new VueRouter({
     routes: [
         {path: '/login', component: Login},
         {path: '/', component: Home},
+        {path: '/bidule', component: Home},
     ],
 })
 

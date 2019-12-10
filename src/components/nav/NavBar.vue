@@ -1,6 +1,6 @@
 <template>
   <header>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
       <Links></Links>
       <slot></slot>
       <span v-if="user" class="navbar-text">
