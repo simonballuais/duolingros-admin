@@ -4,7 +4,6 @@ const user = JSON.parse(localStorage.getItem('user'));
 const state = {
     'status': {
         loggedIn: !!user,
-        invalidCredentials: false,
     },
     'user': user,
     'token': null,
@@ -33,23 +32,25 @@ const actions = {
 
 const mutations = {
     loginRequest(state) {
-        state.status.logginIn = true
-        state.status.invalidCredentials = false
-        state.user = null
+        state.status = {
+            loggingIn: true,
+        }
     },
     loginSuccess(state, user, token) {
-        state.status.loggedIn = true
-        state.status.invalidCredentials = false
+        state.status = {
+            loggedIn: true,
+        }
+
         state.user = user
         state.token = token
     },
     loginFailure(state) {
-        state.status.invalidCredentials = true
-        state.user = null
+        state.status = {
+            invalidCredentials: true
+        }
     },
     logout(state) {
         state.status = {}
-        state.user = null
     },
 }
 

@@ -15,7 +15,7 @@
             <Input v-model="password" placeholder="Password" type="password" />
           </div>
           <div class="form-group">
-            <Submit label="Go" />
+            <Submit label="Go" :loading="status.loggingIn" />
           </div>
           </InlineForm>
         </div>
@@ -37,7 +37,7 @@ export default {
     return {
       username: '',
       password: '',
-      submitted: false,
+      loading: false,
     }
   },
   computed: {
@@ -51,7 +51,7 @@ export default {
   methods: {
     ...mapActions('security', ['login', 'logout']),
     handleSubmit() {
-      this.submitted = true
+      this.loading = true
       const {username, password} = this
 
       if (username && password) {

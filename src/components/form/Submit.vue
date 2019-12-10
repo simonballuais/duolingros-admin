@@ -1,7 +1,10 @@
 <template>
   <button class="btn btn-success"
           type="submit">
-    {{ label }}
+    <span class="spinner-border" v-if="loading"></span>
+    <span v-if="!loading">
+      {{ label }}
+    </span>
   </button>
 </template>
 
@@ -12,6 +15,10 @@ export default {
       type: String,
       default: 'Ok',
     },
+    'loading': {
+      type: Boolean,
+      default: false,
+    }
   },
 }
 </script>
