@@ -1,32 +1,26 @@
 import axios from 'axios'
 
-let urls = {
+const urls = {
     'login': 'login',
     'logout': 'logout',
     'lessons': 'lessons',
 }
 
-let axiosConfigured = axios.create({
+const axiosConfigured = axios.create({
     baseURL: 'api',
 });
 
 axiosConfigured.defaults.headers.common['Content-Type'] = 'application/json'
+axiosConfigured.defaults.headers.common['Accept'] = 'application/json'
+
+const token = localStorage.getItem('token')
+if (token) {
+    axiosConfigured.defaults.headers.common['Authorization'] = 'Bearer ' + token
+}
 
 export default {
     get(urlName) {
         return urls[urlName]
-    },
-    authHeader() {
-        let user = JSON.parse(localStorage.getItem('user'))
-
-        if (user && user.token) {
-            return {
-                'Authorization': 'Bearer ' + user.token,
-                'Accept': 'application/json',
-            }
-        }
-
-        return {};
     },
     getAxios() {
         return axiosConfigured
