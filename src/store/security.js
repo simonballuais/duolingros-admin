@@ -15,8 +15,8 @@ const actions = {
 
         userService.login(username, password)
             .then(
-                (user, token) => {
-                    commit('loginSuccess', user, token)
+                ({user, token}) => {
+                    commit('loginSuccess', {user, token})
                 }
             ).catch(
                 () => {
@@ -36,13 +36,16 @@ const mutations = {
             loggingIn: true,
         }
     },
-    loginSuccess(state, user, token) {
+    loginSuccess(state, {user, token}) {
         state.status = {
             loggedIn: true,
         }
 
         state.user = user
         state.token = token
+
+        localStorage.setItem('user', JSON.stringify(user))
+        localStorage.setItem('token', token)
     },
     loginFailure(state) {
         state.status = {

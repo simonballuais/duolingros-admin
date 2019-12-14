@@ -12,8 +12,9 @@ function login(username, password) {
                 Urls.get('login'),
                 {'email': username, password}
             ).then((response) => {
-                resolve(response.data.user, response.data.token)
-            }).catch(() => {
+                resolve(response.data)
+            }).catch((data) => {
+                window.console.error(data);
                 reject()
             })
     });
