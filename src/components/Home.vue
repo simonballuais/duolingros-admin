@@ -6,7 +6,7 @@
       </SideMenu>
 
       <LessonDetails v-if="currentLesson"
-                     :lesson="currentLesson">
+                    :lesson="currentLesson">
       </LessonDetails>
     </div>
   </div>
@@ -45,3 +45,8 @@ export default {
   }
 }
 </script>
+
+<style lang="sass">
+div.container-fluid
+  padding-top: 48px
+</style>

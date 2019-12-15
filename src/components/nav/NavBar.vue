@@ -1,6 +1,6 @@
 <template>
   <header>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
       <Links></Links>
       <slot></slot>
       <span v-if="user" class="navbar-text">
@@ -25,3 +25,8 @@ export default {
   },
 }
 </script>
+
+<style lang="sass">
+nav.navbar
+  box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15)
+</style>

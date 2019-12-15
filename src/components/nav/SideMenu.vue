@@ -1,5 +1,5 @@
 <template>
-  <nav class="col-md-2 bg-light sidebar">
+  <nav class="col-md-3 bg-light sidebar">
     <div class="sidebar-sticky">
       <h1 class="sidebar-heading">
         {{ title }}
@@ -25,6 +25,7 @@ export default {
   z-index: 100
   padding: 18px 0 0
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1)
+  font-size: .875rem
 
 .sidebar-sticky
   position: relative

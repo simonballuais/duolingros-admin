@@ -3,6 +3,7 @@ import { lessonService } from '../service'
 const state = {
     'lessons': [],
     'currentLesson': null,
+    'status': {},
 }
 
 const actions = {
@@ -16,14 +17,21 @@ const actions = {
             })
     },
     updateCurrentLesson({commit}, {id}) {
-        lessonService.fetchOne(id)
+        lessonService.fetchById(id)
             .then((lesson) => {
                 commit('currentLessonUpdated', lesson)
             })
             .catch(() => {
                 commit('currentLessonUpdateError')
             })
-    }
+    },
+    saveLesson({commit}, {lesson}) {
+        commit('savingLesson')
+
+        lessonService.save(lesson)
+            .then(() => commit('lessonSaved'))
+            .catch(() => commit('lessonSaveError'))
+    },
 }
 
 const mutations = {
@@ -38,6 +46,15 @@ const mutations = {
     },
     currentLessonUpdateError(state) {
         state.lesson = null
+    },
+    savingLesson(state) {
+        state.status = { savingLesson: true }
+    },
+    lessonSaved(state) {
+        state.status = { savingLesson: false }
+    },
+    lessonSaveError(state) {
+        state.status = { savingLesson: false }
     },
 }
 

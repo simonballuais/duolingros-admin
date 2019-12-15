@@ -1,10 +1,11 @@
 <template>
-  <input class="form-control"
+  <input class="form-control big"
          :type="type"
          :placeholder="placeholder"
          :aria-label="placeholder"
          v-model="value"
          @input="$emit('input', value)"
+         @keyup="$emit('keyup', value)"
          >
 </template>
 

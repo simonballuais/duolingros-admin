@@ -13,6 +13,7 @@ const axiosConfigured = axios.create({
 
 axiosConfigured.defaults.headers.common['Content-Type'] = 'application/json'
 axiosConfigured.defaults.headers.common['Accept'] = 'application/json'
+axiosConfigured.defaults.headers.put['Content-Type'] = 'application/json'
 
 
 export default {
@@ -22,7 +23,6 @@ export default {
         if (! routeArguments) {
             return url
         }
-            window.console.log(routeArguments)
 
         Object.keys(routeArguments).forEach(argName => {
             const argValue = routeArguments[argName]

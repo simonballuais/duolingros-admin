@@ -2,7 +2,8 @@ import Urls from '../urls'
 
 export const lessonService = {
     fetchAll,
-    fetchOne,
+    fetchById,
+    save,
 }
 
 function fetchAll () {
@@ -17,10 +18,24 @@ function fetchAll () {
     });
 }
 
-function fetchOne (id) {
+function fetchById (id) {
     return new Promise((resolve, reject) => {
         Urls.getAxios()
             .get(Urls.get('lesson', {id}))
+            .then((response) => {
+                resolve(response.data)
+            }).catch(() => {
+                reject()
+            })
+    });
+}
+
+function save(lesson) {
+    return new Promise((resolve, reject) => {
+        Urls.getAxios()
+            .put(Urls.get('lesson', {id: lesson.id}),
+                   JSON.stringify(lesson)
+            )
             .then((response) => {
                 resolve(response.data)
             }).catch(() => {
