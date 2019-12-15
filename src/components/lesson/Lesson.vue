@@ -1,9 +1,12 @@
 <template>
-  <router-link to="/login"
+  <router-link :to="{ name: 'lesson', params: { id: lesson.id }}"
                v-slot="{href, route, navigate, isActive, isExactActive}"
     >
     <li class="nav-item">
-      <a :href="href" class="nav-link">
+      <a :href="href"
+         class="nav-link"
+         @click="updateCurrentLesson({id: lesson.id})"
+         >
         {{ lesson.title }}
       </a>
     </li>
@@ -11,9 +14,14 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
+
 export default {
   name: 'Lesson',
   props: ['lesson'],
+  methods: {
+    ...mapActions('lesson', ['updateCurrentLesson']),
+  }
 }
 </script>
 

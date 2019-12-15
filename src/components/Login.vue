@@ -63,7 +63,7 @@ export default {
   created() {
     this.$store.subscribe((mutation) => {
       if (mutation.type === 'security/loginSuccess') {
-        this.$router.push({path: 'bidule'})
+        this.$router.push({name: 'lessons'})
       }
     });
   }

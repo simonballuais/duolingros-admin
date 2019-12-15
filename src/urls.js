@@ -4,6 +4,7 @@ const urls = {
     'login': 'login',
     'logout': 'logout',
     'lessons': 'lessons',
+    'lesson': 'lessons/{id}',
 }
 
 const axiosConfigured = axios.create({
@@ -15,8 +16,21 @@ axiosConfigured.defaults.headers.common['Accept'] = 'application/json'
 
 
 export default {
-    get(urlName) {
-        return urls[urlName]
+    get(urlName, routeArguments) {
+        let url = urls[urlName]
+
+        if (! routeArguments) {
+            return url
+        }
+            window.console.log(routeArguments)
+
+        Object.keys(routeArguments).forEach(argName => {
+            const argValue = routeArguments[argName]
+
+            url = url.replace('{' + argName + '}', argValue)
+        });
+
+        return url
     },
     getAxios() {
         const token = localStorage.getItem('token')

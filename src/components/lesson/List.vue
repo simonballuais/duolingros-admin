@@ -21,10 +21,10 @@ export default {
     ...mapState('lesson', ['lessons']),
   },
   methods: {
-    ...mapActions('lesson', ['getLessons']),
+    ...mapActions('lesson', ['updateLessons']),
   },
   created() {
-    this.getLessons()
+    this.updateLessons()
   }
 }
 </script>

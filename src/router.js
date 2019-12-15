@@ -5,9 +5,10 @@ import Home from './components/Home.vue'
 
 let router = new VueRouter({
     routes: [
-        {path: '/login', component: Login},
+        {name: 'login', path: '/login', component: Login},
         {path: '/', component: Home},
-        {path: '/bidule', component: Home},
+        {name: 'lessons', path: '/lessons', component: Home},
+        {name: 'lesson', path: '/lessons/:id', component: Home, props: true},
     ],
 })
 

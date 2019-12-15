@@ -2,26 +2,42 @@ import { lessonService } from '../service'
 
 const state = {
     'lessons': [],
+    'currentLesson': null,
 }
 
 const actions = {
-    getLessons({commit}) {
+    updateLessons({commit}) {
         lessonService.fetchAll()
             .then((lessons) => {
-                commit('lessonsFetched', lessons)
+                commit('lessonsUpdated', lessons)
             })
             .catch(() => {
-                commit('lessonsFetchError')
+                commit('lessonsUpdateError')
             })
     },
+    updateCurrentLesson({commit}, {id}) {
+        lessonService.fetchOne(id)
+            .then((lesson) => {
+                commit('currentLessonUpdated', lesson)
+            })
+            .catch(() => {
+                commit('currentLessonUpdateError')
+            })
+    }
 }
 
 const mutations = {
-    lessonsFetched(state, lessons) {
+    lessonsUpdated(state, lessons) {
         state.lessons = lessons
     },
-    lessonsFetchError(state) {
+    lessonsUpdateError(state) {
         state.lessons = []
+    },
+    currentLessonUpdated(state, lesson) {
+        state.currentLesson = lesson
+    },
+    currentLessonUpdateError(state) {
+        state.lesson = null
     },
 }
 
