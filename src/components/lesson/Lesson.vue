@@ -1,7 +1,13 @@
 <template>
-  <li>
-    {{ lesson.id }} - {{ lesson.title }}
-  </li>
+  <router-link to="/login"
+               v-slot="{href, route, navigate, isActive, isExactActive}"
+    >
+    <li class="nav-item">
+      <a :href="href" class="nav-link">
+        {{ lesson.title }}
+      </a>
+    </li>
+  </router-link>
 </template>
 
 <script>
@@ -10,3 +16,12 @@ export default {
   props: ['lesson'],
 }
 </script>
+
+<style lang="sass">
+.sidebar .nav-link
+  font-weight: 500
+  color: #333
+
+  &.active, &:hover
+    color: #999
+</style>

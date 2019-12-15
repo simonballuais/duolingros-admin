@@ -13,16 +13,18 @@ const axiosConfigured = axios.create({
 axiosConfigured.defaults.headers.common['Content-Type'] = 'application/json'
 axiosConfigured.defaults.headers.common['Accept'] = 'application/json'
 
-const token = localStorage.getItem('token')
-if (token) {
-    axiosConfigured.defaults.headers.common['Authorization'] = 'Bearer ' + token
-}
 
 export default {
     get(urlName) {
         return urls[urlName]
     },
     getAxios() {
+        const token = localStorage.getItem('token')
+
+        if (token) {
+            axiosConfigured.defaults.headers.common['Authorization'] = 'Bearer ' + token
+        }
+
         return axiosConfigured
     }
 }

@@ -1,16 +1,10 @@
 <template>
-  <div>
-    <h1>
-      Lessons :
-    </h1>
-
-    <ul>
-      <Lesson v-for="lesson in lessons"
-              :key="lesson.id"
-              :lesson="lesson">
-      </Lesson>
-    </ul>
-  </div>
+  <ul class="nav flex-column">
+    <Lesson v-for="lesson in lessons"
+            :key="lesson.id"
+            :lesson="lesson">
+    </Lesson>
+  </ul>
 </template>
 
 <script>
