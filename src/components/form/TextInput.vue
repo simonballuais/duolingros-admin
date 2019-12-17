@@ -6,6 +6,7 @@
          v-model="value"
          @input="$emit('input', value)"
          @keyup="$emit('keyup', value)"
+         :class="{ big, small }"
          >
 </template>
 
@@ -20,6 +21,14 @@ export default {
       type: String,
       default: 'text',
     },
+    'small': {
+      type: Boolean,
+      default: false,
+    },
+    'big': {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return{
@@ -28,3 +37,12 @@ export default {
   },
 }
 </script>
+
+<style lang="sass">
+input.big
+  font-size: 32px
+  font-variant: small-caps
+
+input.small
+  font-size: 12px
+</style>

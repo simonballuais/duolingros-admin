@@ -1,20 +1,36 @@
 <template>
   <div>
     <div class="d-flex pt-3 pb-2 border-bottom align-items-center">
-      <BigTextInput :placeholder="'Title'"
+      <TextInput :placeholder="'Title'"
          v-model="lesson.title"
-         @keyup="handleChange"
+         @keyup="$emit('keyup', value)"
+         :big="true"
          />
-      <div class="spinner-container" v-if="status.savingLesson">
-        <Spinner />
-      </div>
+      <Spinner v-if="status.savingLesson" />
     </div>
 
     <Form>
-      <TextInput :placeholder="'Description'"
+      <TextInput placeholder="Description"
                  v-model="lesson.description"
-                 @keyup="handleChange"
+                 @keyup="$emit('keyup', value)"
       />
+
+      <hr />
+
+      <TextInput placeholder="Description"
+                 v-model="lesson.exercisePerStudy"
+                 type="number"
+                 @keyup="$emit('keyup', value)"
+      />
+
+      <hr v-if="lesson.translationList" />
+      <h3 v-if="lesson.translationList">Translations</h3>
+
+      <TranslationDetails v-for="translation in lesson.translationList"
+                          :key="translation.id"
+                          :translation="translation"
+      />
+
     </Form>
   </div>
 </template>
@@ -25,16 +41,16 @@ import _ from 'lodash'
 
 import Form from '../form/Form'
 import TextInput from '../form/TextInput'
-import BigTextInput from '../form/BigTextInput'
 import Spinner from '../misc/Spinner'
+import TranslationDetails from '../translation/TranslationDetails'
 
 export default {
   name: 'LessonDetails',
   components: {
     Form,
     TextInput,
-    BigTextInput,
     Spinner,
+    TranslationDetails,
   },
   computed: {
     ...mapState('lesson', ['status']),
@@ -49,11 +65,10 @@ export default {
 }
 </script>
 
-<style lang="sass">
-input.big
-  font-size: 32px
-  font-variant: small-caps
-
+<style lang="sass" scoped>
 .spinner-container
   margin: 16px
+
+h3
+  margin-bottom: 24px
 </style>
