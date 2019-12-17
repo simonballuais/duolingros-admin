@@ -17,6 +17,8 @@ const actions = {
             })
     },
     updateCurrentLesson({commit}, {id}) {
+        commit('updatingCurrentLesson');
+
         lessonService.fetchById(id)
             .then((lesson) => {
                 commit('currentLessonUpdated', lesson)
@@ -41,20 +43,23 @@ const mutations = {
     lessonsUpdateError(state) {
         state.lessons = []
     },
+    updatingCurrentLesson(state) {
+        state.currentLesson = null
+    },
     currentLessonUpdated(state, lesson) {
         state.currentLesson = lesson
     },
     currentLessonUpdateError(state) {
-        state.lesson = null
+        state.currentLesson = null
     },
     savingLesson(state) {
-        state.status = { savingLesson: true }
+        state.status.savingLesson = true
     },
     lessonSaved(state) {
-        state.status = { savingLesson: false }
+        state.status.savingLesson = false
     },
     lessonSaveError(state) {
-        state.status = { savingLesson: false }
+        state.status.savingLesson = false
     },
 }
 

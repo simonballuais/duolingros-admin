@@ -5,9 +5,16 @@
         <LessonList></LessonList>
       </SideMenu>
 
-      <LessonDetails v-if="currentLesson"
-                    :lesson="currentLesson">
-      </LessonDetails>
+      <main class="col-md-9" role="main">
+        <LessonDetails v-if="currentLesson"
+                       :lesson="currentLesson">
+        </LessonDetails>
+
+        <Spinner v-if="!currentLesson"
+                 :big="true"
+                 :center="true"
+        ></Spinner>
+      </main>
     </div>
   </div>
 </template>
@@ -18,14 +25,16 @@ import {mapState, mapActions} from 'vuex'
 import LessonList from './lesson/List'
 import LessonDetails from './lesson/LessonDetails'
 import SideMenu from './nav/SideMenu'
+import Spinner from './misc/Spinner'
 
 export default {
   name: 'Home',
   props: ['id'],
   components: {
     LessonList,
-    SideMenu,
     LessonDetails,
+    SideMenu,
+    Spinner,
   },
   computed: {
     ...mapState('lesson', ['currentLesson']),

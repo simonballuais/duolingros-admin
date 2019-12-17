@@ -1,22 +1,22 @@
 <template>
-  <main class="col-md-9" role="main">
-  <div class="d-flex pt-3 pb-2 border-bottom align-items-center">
-    <BigTextInput :placeholder="'Title'"
-                  v-model="lesson.title"
-                  @keyup="handleChange"
-    />
-    <div class="spinner-container" v-if="status.savingLesson">
-      <Spinner />
+  <div>
+    <div class="d-flex pt-3 pb-2 border-bottom align-items-center">
+      <BigTextInput :placeholder="'Title'"
+         v-model="lesson.title"
+         @keyup="handleChange"
+         />
+      <div class="spinner-container" v-if="status.savingLesson">
+        <Spinner />
+      </div>
     </div>
-  </div>
 
-  <Form>
-    <TextInput :placeholder="'Description'"
-               v-model="lesson.description"
-               @keyup="handleChange"
-    />
-  </Form>
-  </main>
+    <Form>
+      <TextInput :placeholder="'Description'"
+                 v-model="lesson.description"
+                 @keyup="handleChange"
+      />
+    </Form>
+  </div>
 </template>
 
 <script>
