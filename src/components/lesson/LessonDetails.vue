@@ -28,7 +28,7 @@
       <TranslationDetails v-for="translation in lesson.translationList"
                           :key="translation.id"
                           :translation="translation"
-                          @keyup="handleChange()"
+                          @change="handleChange()"
       />
 
     </Form>
@@ -68,7 +68,9 @@ export default {
 <style lang="sass">
 .spinner-container
   margin: 16px
+</style>
 
+<style lang="sass" scoped>
 h3
   margin-bottom: 24px
 </style>
