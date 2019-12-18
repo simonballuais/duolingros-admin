@@ -3,7 +3,7 @@
     <div class="d-flex pt-3 pb-2 border-bottom align-items-center">
       <TextInput :placeholder="'Title'"
          v-model="lesson.title"
-         @keyup="$emit('keyup', value)"
+         @keyup="handleChange()"
          :big="true"
          />
       <Spinner v-if="status.savingLesson" />
@@ -12,15 +12,14 @@
     <Form>
       <TextInput placeholder="Description"
                  v-model="lesson.description"
-                 @keyup="$emit('keyup', value)"
+                 @keyup="handleChange()"
       />
 
       <hr />
 
-      <TextInput placeholder="Description"
-                 v-model="lesson.exercisePerStudy"
+      <TextInput v-model="lesson.exercisePerStudy"
                  type="number"
-                 @keyup="$emit('keyup', value)"
+                 @keyup="handleChange()"
       />
 
       <hr v-if="lesson.translationList" />
@@ -29,6 +28,7 @@
       <TranslationDetails v-for="translation in lesson.translationList"
                           :key="translation.id"
                           :translation="translation"
+                          @keyup="handleChange()"
       />
 
     </Form>
@@ -65,7 +65,7 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
 .spinner-container
   margin: 16px
 

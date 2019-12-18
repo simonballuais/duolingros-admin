@@ -2,7 +2,7 @@
   <div>
       <TextInput placeholder="Text"
                  v-model="translation.text"
-                 @keyup="$emit('keyup', value)"
+                 @keyup="$emit('keyup')"
       />
 
       <ul>
@@ -11,6 +11,7 @@
           <TextInput placeholder="Possible answer"
                      v-model="translation.answerList[index]"
                      :small="true"
+                     @keyup="$emit('keyup')"
           />
         </li>
       </ul>

@@ -3,7 +3,9 @@ import { lessonService } from '../service'
 const state = {
     'lessons': [],
     'currentLesson': null,
-    'status': {},
+    'status': {
+        savingLesson: false,
+    },
 }
 
 const actions = {
