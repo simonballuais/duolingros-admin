@@ -10,17 +10,20 @@
     </div>
 
     <Form>
-      <TextInput placeholder="Description"
-                 v-model="lesson.description"
-                 @keyup="handleChange()"
-      />
+      <div class="input-group">
+        <div class="input-group-prepend flex-grow-1">
+          <TextInput placeholder="Description"
+                     v-model="lesson.description"
+                     @keyup="handleChange()"
+                     />
+        </div>
 
-      <hr />
-
-      <TextInput v-model="lesson.exercisePerStudy"
-                 type="number"
-                 @keyup="handleChange()"
-      />
+        <TextInput placeholder="Exercise per study"
+                   v-model="lesson.exercisePerStudy"
+                   type="number"
+                   @keyup="handleChange()"
+                   />
+      </div>
 
       <hr v-if="lesson.translationList" />
       <h3 v-if="lesson.translationList">Translations</h3>
