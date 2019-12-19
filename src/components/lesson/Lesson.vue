@@ -5,7 +5,6 @@
     <li class="nav-item">
       <a :href="href"
          class="nav-link"
-         @click="updateCurrentLesson({id: lesson.id})"
          >
         {{ lesson.title }}
       </a>
@@ -14,14 +13,9 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-
 export default {
   name: 'Lesson',
   props: ['lesson'],
-  methods: {
-    ...mapActions('lesson', ['updateCurrentLesson']),
-  }
 }
 </script>
 
