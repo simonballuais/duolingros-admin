@@ -54,6 +54,10 @@ const mutations = {
     },
     logout(state) {
         state.status = {}
+        state.token = null
+        state.user = null
+        localStorage.setItem('user', null)
+        localStorage.setItem('token', null)
     },
 }
 
