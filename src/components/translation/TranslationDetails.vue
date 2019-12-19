@@ -88,21 +88,23 @@ ul
   li
     margin: 5px 0 0 36px
 
-    &.answer button
-      font-size: 10px
-      display: none
+    &.answer
+      .remove-answer, .add-answer
+        font-size: 10px
+        display: none
 
-      &.add-answer
-        width: 32px
+        &.add-answer
+          width: 32px
 
 ul:hover
   li
-    &.answer button
-      display: block
+    &.answer
+      .add-answer, .remove-answer
+        display: block
 
   li:last-child
     margin-left: 0
 
-    &.answer button
+    &.answer .add-answer
       margin-right: 4px
 </style>

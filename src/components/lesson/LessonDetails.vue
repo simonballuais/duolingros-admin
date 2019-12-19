@@ -67,7 +67,7 @@ export default {
 
 <style lang="sass">
 .spinner-container
-  margin: 16px
+  margin: 0 8px 0 8px
 </style>
 
 <style lang="sass" scoped>
