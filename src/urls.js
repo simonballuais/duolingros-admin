@@ -1,4 +1,5 @@
 import axios from 'axios'
+import router from './router'
 
 const urls = {
     'login': 'login',
@@ -15,6 +16,20 @@ axiosConfigured.defaults.headers.common['Content-Type'] = 'application/json'
 axiosConfigured.defaults.headers.common['Accept'] = 'application/json'
 axiosConfigured.defaults.headers.put['Content-Type'] = 'application/json'
 
+axiosConfigured.interceptors.response.use(
+    function (response) {
+        return response
+    },
+    function (error) {
+        if (error.response.status === 401) {
+            localStorage.removeItem('user')
+            localStorage.removeItem('token')
+            router.push({'name': 'login'})
+        }
+
+        return Promise.reject(error)
+    }
+)
 
 export default {
     get(urlName, routeArguments) {

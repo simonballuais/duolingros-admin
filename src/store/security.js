@@ -56,8 +56,8 @@ const mutations = {
         state.status = {}
         state.token = null
         state.user = null
-        localStorage.setItem('user', null)
-        localStorage.setItem('token', null)
+        localStorage.removeItem('user')
+        localStorage.removeItem('token')
     },
 }
 
