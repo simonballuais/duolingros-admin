@@ -28,12 +28,13 @@
       <hr v-if="lesson.translationList" />
       <h3 v-if="lesson.translationList">Translations</h3>
 
-      <TranslationDetails v-for="translation in lesson.translationList"
-                          :key="translation.id"
-                          :translation="translation"
-                          @change="handleChange()"
-      />
-
+      <transition-group name="translation-list" tag="div">
+        <TranslationDetails v-for="translation in translationList"
+                            :key="translation.id"
+                            :translation="translation"
+                            @change="handleChange()"
+        />
+      </transition-group>
     </Form>
   </div>
 </template>
@@ -57,6 +58,11 @@ export default {
   },
   computed: {
     ...mapState('lesson', ['status']),
+    translationList() {
+      return this.lesson.translationList.slice().sort(
+        (a, b) => a.difficulty - b.difficulty
+      )
+    },
   },
   props: ['lesson'],
   methods: {
@@ -76,4 +82,7 @@ export default {
 <style lang="sass" scoped>
 h3
   margin-bottom: 24px
+
+.translation-list-move
+  transition: transform 1s
 </style>
