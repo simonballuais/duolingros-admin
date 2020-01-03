@@ -1,11 +1,9 @@
 <template>
   <div class="container-fluid">
-    <div class="row">
-      <SideMenu :title="'Lessons'">
-        <LessonList></LessonList>
-      </SideMenu>
+    <SideMenu :title="'Lessons'" />
 
-      <main class="col-md-9" role="main">
+    <div class="row">
+      <main class="col-md-12" role="main">
         <LessonDetails v-if="currentLesson"
                        :lesson="currentLesson">
         </LessonDetails>
@@ -22,7 +20,6 @@
 <script>
 import {mapState, mapActions} from 'vuex'
 
-import LessonList from './lesson/List'
 import LessonDetails from './lesson/LessonDetails'
 import SideMenu from './nav/SideMenu'
 import Spinner from './misc/Spinner'
@@ -31,7 +28,6 @@ export default {
   name: 'Home',
   props: ['id'],
   components: {
-    LessonList,
     LessonDetails,
     SideMenu,
     Spinner,
@@ -58,4 +54,8 @@ export default {
 <style lang="sass">
 div.container-fluid
   padding-top: 48px
+  padding-left: 280px
+
+main
+  min-height: 500px
 </style>

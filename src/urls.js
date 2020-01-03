@@ -6,6 +6,7 @@ const urls = {
     'logout': 'logout',
     'lessons': 'lessons',
     'lesson': 'lessons/{id}',
+    'book_lessons': 'book_lessons',
 }
 
 const axiosConfigured = axios.create({

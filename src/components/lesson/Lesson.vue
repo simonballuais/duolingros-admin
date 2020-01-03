@@ -22,7 +22,8 @@ export default {
 <style lang="sass">
 .sidebar .nav-link
   font-weight: 500
-  color: #333
+  color: #343
+  padding: 4px 0 0 16px
 
   &.active, &:hover
     color: #999
