@@ -9,8 +9,9 @@
       </div>
 
       <TextInput placeholder="Text"
-                 v-model="translation.difficulty"
+                 v-model.number="translation.difficulty"
                  @keyup="$emit('change')"
+                 type="number"
                  />
 
       <div class="input-group-append">

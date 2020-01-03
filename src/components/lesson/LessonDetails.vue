@@ -19,7 +19,7 @@
         </div>
 
         <TextInput placeholder="Exercise per study"
-                   v-model="lesson.exercisePerStudy"
+                   v-model.number="lesson.exercisePerStudy"
                    type="number"
                    @keyup="handleChange()"
                    />
