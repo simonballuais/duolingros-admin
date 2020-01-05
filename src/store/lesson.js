@@ -32,8 +32,10 @@ const actions = {
                 commit('currentLessonUpdateError')
             })
     },
-    undoCurrentLesson({commit}) {
+    undoCurrentLesson({commit, dispatch, state}) {
         commit('currentLessonUndone')
+        state.lessonMemento.undo()
+        dispatch('saveCurrentLesson')
     },
     saveCurrentLesson({commit}) {
         commit('savingLesson')
