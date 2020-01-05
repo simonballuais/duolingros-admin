@@ -3,8 +3,8 @@
          :type="type"
          :placeholder="placeholder"
          :aria-label="placeholder"
-         v-model="value"
-         @input="$emit('input', value)"
+         :value="inputValue"
+         @input="updateInputValue($event.target.value)"
          @keyup="$emit('keyup', value)"
          :class="{ big, small }"
          >
@@ -13,6 +13,9 @@
   <script>
 export default {
   props: {
+    'value': {
+      'type': String,
+    },
     'placeholder': {
       type: String,
       default: '',
@@ -30,11 +33,22 @@ export default {
       default: false,
     },
   },
-  data() {
-    return{
-      'value': '',
-    }
+  methods: {
+    updateInputValue(value) {
+      this.$emit('input', value)
+      this.inputValue = value
+    },
   },
+  computed: {
+    inputValue: {
+      get() {
+        return this.value
+      },
+      set(val) {
+        this.value = val
+      }
+    },
+  }
 }
 </script>
 

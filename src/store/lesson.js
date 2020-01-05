@@ -1,4 +1,5 @@
 import { lessonService } from '../service'
+import Memento from '../misc/memento'
 
 const state = {
     'lessons': [],
@@ -6,6 +7,7 @@ const state = {
     'status': {
         savingLesson: false,
     },
+    'lessonMemento': Memento(),
 }
 
 const actions = {
@@ -29,10 +31,13 @@ const actions = {
                 commit('currentLessonUpdateError')
             })
     },
-    saveLesson({commit}, {lesson}) {
+    undoCurrentLesson({commit}) {
+        commit('currentLessonUndone')
+    },
+    saveCurrentLesson({commit}) {
         commit('savingLesson')
 
-        lessonService.save(lesson)
+        lessonService.save(state.currentLesson)
             .then(() => commit('lessonSaved'))
             .catch(() => commit('lessonSaveError'))
     },
@@ -50,12 +55,23 @@ const mutations = {
     },
     currentLessonUpdated(state, lesson) {
         state.currentLesson = lesson
+        state.lessonMemento.reset(lesson)
+    },
+    currentLessonUndone(state) {
+        const previousLessonState = state.lessonMemento.undo()
+
+        if (!previousLessonState) {
+            return
+        }
+
+        state.currentLesson = previousLessonState
     },
     currentLessonUpdateError(state) {
         state.currentLesson = null
     },
     savingLesson(state) {
         state.status.savingLesson = true
+        state.lessonMemento.addState(state.currentLesson)
     },
     lessonSaved(state) {
         state.status.savingLesson = false

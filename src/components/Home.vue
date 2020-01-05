@@ -4,9 +4,7 @@
 
     <div class="row">
       <main class="col-md-12" role="main">
-        <LessonDetails v-if="currentLesson"
-                       :lesson="currentLesson">
-        </LessonDetails>
+        <LessonDetails v-if="currentLesson" />
 
         <Spinner v-if="!currentLesson"
                  :big="true"

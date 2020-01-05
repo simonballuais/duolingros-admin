@@ -2,10 +2,11 @@
   <div>
     <div class="d-flex pt-3 pb-2 border-bottom align-items-center">
       <TextInput :placeholder="'Title'"
-         v-model="lesson.title"
-         @keyup="handleChange()"
+         v-model="currentLesson.title"
+         @input="handleChange()"
          :big="true"
-         />
+      />
+      <button @click="undoCurrentLesson">Undo</button>
       <Spinner v-if="status.savingLesson" />
     </div>
 
@@ -13,20 +14,20 @@
       <div class="input-group">
         <div class="input-group-prepend flex-grow-1">
           <TextInput placeholder="Description"
-                     v-model="lesson.description"
+                     v-model="currentLesson.description"
                      @keyup="handleChange()"
                      />
         </div>
 
         <TextInput placeholder="Exercise per study"
-                   v-model.number="lesson.exercisePerStudy"
+                   v-model.number="currentLesson.exercisePerStudy"
                    type="number"
                    @keyup="handleChange()"
                    />
       </div>
 
-      <hr v-if="lesson.translationList" />
-      <h3 v-if="lesson.translationList">Translations</h3>
+      <hr v-if="currentLesson.translationList" />
+      <h3 v-if="currentLesson.translationList">Translations</h3>
 
       <transition-group name="translation-list" tag="div">
         <TranslationDetails v-for="translation in translationList"
@@ -57,18 +58,17 @@ export default {
     TranslationDetails,
   },
   computed: {
-    ...mapState('lesson', ['status']),
+    ...mapState('lesson', ['status', 'currentLesson']),
     translationList() {
-      return this.lesson.translationList.slice().sort(
+      return this.currentLesson.translationList.slice().sort(
         (a, b) => a.difficulty - b.difficulty
       )
     },
   },
-  props: ['lesson'],
   methods: {
-    ...mapActions('lesson', ['saveLesson']),
+    ...mapActions('lesson', ['saveCurrentLesson', 'undoCurrentLesson']),
     handleChange: _.debounce(function () {
-      this.saveLesson({ lesson: this.lesson })
+      this.saveCurrentLesson()
     }, 1000),
   }
 }
