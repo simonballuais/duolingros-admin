@@ -8,6 +8,7 @@ const state = {
         savingLesson: false,
     },
     'lessonMemento': Memento(),
+    'lessonUndoable': false,
 }
 
 const actions = {
@@ -65,6 +66,7 @@ const mutations = {
         }
 
         state.currentLesson = previousLessonState
+        state.lessonUndoable = state.lessonMemento.undoable()
     },
     currentLessonUpdateError(state) {
         state.currentLesson = null
@@ -72,6 +74,7 @@ const mutations = {
     savingLesson(state) {
         state.status.savingLesson = true
         state.lessonMemento.addState(state.currentLesson)
+        state.lessonUndoable = state.lessonMemento.undoable()
     },
     lessonSaved(state) {
         state.status.savingLesson = false

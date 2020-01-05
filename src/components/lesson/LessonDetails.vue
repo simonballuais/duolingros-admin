@@ -6,7 +6,20 @@
          @input="handleChange()"
          :big="true"
       />
-      <button @click="undoCurrentLesson">Undo</button>
+      <button class="btn btn-outline-primary ml-2"
+              @click="undoCurrentLesson"
+              :disabled="!lessonUndoable"
+              >
+        <font-awesome-icon icon="undo" />
+      </button>
+
+      <button class="btn btn-outline-secondary ml-2"
+              v-if="!status.savingLesson"
+              @click="undoCurrentLesson"
+              disabled
+              >
+        <font-awesome-icon icon="save" />
+      </button>
       <Spinner v-if="status.savingLesson" />
     </div>
 
@@ -58,7 +71,7 @@ export default {
     TranslationDetails,
   },
   computed: {
-    ...mapState('lesson', ['status', 'currentLesson']),
+    ...mapState('lesson', ['status', 'currentLesson', 'lessonUndoable']),
     translationList() {
       return this.currentLesson.translationList.slice().sort(
         (a, b) => a.difficulty - b.difficulty

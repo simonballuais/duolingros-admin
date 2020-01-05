@@ -22,6 +22,9 @@ export default function () {
             window.console.log('Resetting to ', JSON.stringify(state))
             history = [JSON.stringify(state)]
         },
+        undoable() {
+            return !!history.length
+        },
     }
 
     return memento

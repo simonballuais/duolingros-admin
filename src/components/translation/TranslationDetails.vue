@@ -9,7 +9,7 @@
       </div>
 
       <TextInput placeholder="Text"
-                 v-model.number="translation.difficulty"
+                 v-model="translation.difficulty"
                  @keyup="$emit('change')"
                  type="number"
                  />
