@@ -5,6 +5,7 @@
         <TextInput placeholder="Text"
                    v-model="translation.text"
                    @keyup="$emit('change')"
+                   bold
                    />
       </div>
 
@@ -17,6 +18,7 @@
       <div class="input-group-append">
         <button type="button"
                 class="btn btn-outline-danger remove-translation"
+                @click="$emit('removeRequest', this)"
                 >
           X
         </button>

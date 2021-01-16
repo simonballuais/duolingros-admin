@@ -6,7 +6,7 @@
          :value="inputValue"
          @input="updateInputValue($event.target.value)"
          @keyup="$emit('keyup', value)"
-         :class="{ big, small }"
+         :class="{ big, small, bold }"
          >
 </template>
 
@@ -28,6 +28,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    'bold': {
+      type: Boolean,
+      default: false,
+    },
     'big': {
       type: Boolean,
       default: false,
@@ -35,8 +39,14 @@ export default {
   },
   methods: {
     updateInputValue(value) {
-      this.$emit('input', value)
-      this.inputValue = value
+      let castedValue = value
+
+      if (this.type === 'number') {
+        castedValue = parseInt(value)
+      }
+
+      this.$emit('input', castedValue)
+      this.inputValue = castedValue
     },
   },
   computed: {
@@ -59,4 +69,7 @@ input.big
 
 input.small
   font-size: 12px
+
+input.bold
+  font-weight: bold
 </style>
