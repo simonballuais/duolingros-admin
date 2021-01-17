@@ -9,6 +9,7 @@ const urls = {
     'propositions': 'propositions',
     'proposition': 'propositions/{id}',
     'questions': 'questions',
+    'question': 'questions/{id}',
     'book_lessons': 'book_lessons',
 }
 

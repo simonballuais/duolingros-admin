@@ -66,7 +66,7 @@
                             :key="`${question.id}-${question.frontId}`"
                             :question="question"
                             @change="handleChange()"
-                            @removeRequest="removeQuestion(questionIndex)"
+                            @removeRequest="removeQuestion(question.id)"
         />
       </transition-group>
 
@@ -112,7 +112,15 @@ export default {
     },
   },
   methods: {
-    ...mapActions('lesson', ['saveCurrentLesson', 'undoCurrentLesson', 'saveQuestion']),
+    ...mapActions(
+      'lesson',
+      [
+        'saveCurrentLesson',
+        'undoCurrentLesson',
+        'saveQuestion',
+        'deleteQuestion',
+      ]
+    ),
     handleChange: _.debounce(function () {
       this.saveCurrentLesson()
     }, 1000),
@@ -138,6 +146,9 @@ export default {
         text: '',
         difficulty: 1,
       }})
+    },
+    removeQuestion(id) {
+      this.deleteQuestion({id})
     },
   },
   created() {

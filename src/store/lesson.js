@@ -71,6 +71,13 @@ const actions = {
             })
             .catch(() => null)
     },
+    deleteQuestion({dispatch, state}, {id}) {
+        questionService.remove({id})
+            .then(() => {
+                dispatch('updateCurrentLesson', {id: state.currentLesson.id})
+            })
+            .catch(() => null)
+    },
 }
 
 const mutations = {
