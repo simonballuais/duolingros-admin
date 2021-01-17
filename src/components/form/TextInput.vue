@@ -6,6 +6,7 @@
          :value="inputValue"
          @input="updateInputValue($event.target.value)"
          @keyup="$emit('keyup', value)"
+         @paste="$emit('paste', $event)"
          :class="{ big, small, bold }"
          >
 </template>

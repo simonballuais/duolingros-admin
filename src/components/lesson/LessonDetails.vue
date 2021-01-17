@@ -1,5 +1,7 @@
 <template>
   <div>
+    <canvas id="pasteCanvas" width="256" height="256"></canvas>
+
     <div class="d-flex pt-3 pb-2 border-bottom align-items-center">
       <TextInput :placeholder="'Title'"
          v-model="currentLesson.title"
@@ -175,4 +177,7 @@ h3
 
 .question-list-move
   transition: transform 1s
+
+canvas
+  display: none
 </style>

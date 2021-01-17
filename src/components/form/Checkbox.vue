@@ -54,6 +54,8 @@ div
   justify-content: space-evenly
   align-items: center
   margin-right: 5px
+  height: 32px
+  width: 32px
 
   label
     white-space: nowrap

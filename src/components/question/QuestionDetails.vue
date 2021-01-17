@@ -26,7 +26,7 @@
                 class="btn btn-outline-danger remove-question"
                 @click="$emit('removeRequest', this)"
                 >
-          X
+           <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         </button>
       </div>
     </div>
@@ -41,9 +41,15 @@
           <button type="button"
                   class="btn btn-outline-success add-proposition"
                   @click="addProposition(question)"
-                  v-if="index == question.propositions.length - 1"
+                  v-if="index === question.propositions.length - 1"
                   >
-            +
+            <span v-if="!question.saving">+</span>
+            <span v-if="question.saving"
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                  >
+            </span>
           </button>
 
 
@@ -54,12 +60,21 @@
                      small
                      />
 
+          <TextInput placeholder="Text"
+                     v-model="proposition.image"
+                     @paste="pasteImg(proposition, $event)"
+                     type="text"
+                     small
+                     />
+
+          <img :src="proposition.image" />
+
           <Checkbox v-model="proposition.rightAnswer"
                     @keyup="$emit('change')"
                     @input="$emit('change')"
                     />
 
-          <div class="input-group-append">
+          <div style="width: 34px">
             <button type="button"
                     class="btn btn-outline-danger remove-proposition"
                     @click="removeProposition(proposition.id)"
@@ -82,6 +97,12 @@ import Checkbox from '../form/Checkbox'
 
 export default {
   name: 'QuestionDetails',
+  data() {
+    return {
+      pasteImage: null,
+      pasteCanvas: null,
+    }
+  },
   props: ['question'],
   components: {
     TextInput,
@@ -93,6 +114,7 @@ export default {
       this.deleteProposition({id});
     },
     addProposition (question) {
+      question.saving = true
       this.saveProposition({proposition: {
           text: '',
           rightAnswer: false,
@@ -100,6 +122,32 @@ export default {
           question: '/api/questions/' + question.id,
       }})
     },
+    pasteImg(proposition, e) {
+      for (var i = 0 ; i < e.clipboardData.items.length ; i++) {
+        let item = e.clipboardData.items[i];
+
+        if (item.type.indexOf("image") != -1) {
+          this.pasteImage.targetEntity = proposition
+          this.pasteImage.src = URL.createObjectURL(item.getAsFile());
+        } else {
+          window.console.log("Discarding non-image paste data");
+        }
+      }
+    },
+  },
+  mounted() {
+    this.canvas = document.getElementById('pasteCanvas');
+    let context = this.canvas.getContext('2d');
+    this.pasteImage = new Image()
+      window.console.log(this.pasteImage);
+
+    this.pasteImage.onload = () => {
+      context.drawImage(this.pasteImage, 0, 0);
+      let base64Image = this.canvas.toDataURL('image/png');
+      this.pasteImage.targetEntity.image = base64Image
+      this.$emit('change')
+    };
+
   },
   created() {
     this.$store.subscribe((mutation) => {
@@ -123,9 +171,13 @@ ul
     margin: 5px 0 0 36px
 
     &.proposition
+      .remove-proposition
+        margin-left: 3px
+
       .remove-proposition, .add-proposition
         font-size: 10px
         display: none
+        height: 32px
 
         &.add-proposition
           width: 32px
@@ -141,4 +193,9 @@ ul:hover
 
     &.proposition .add-proposition
       margin-right: 4px
+
+img
+  margin: 3px 3px 3px 20px
+  border-radius: 4px
+  box-shadow: 0 0 20px black
 </style>
