@@ -47,7 +47,7 @@
                             :key="`${translation.id}-${translation.frontId}`"
                             :translation="translation"
                             @change="handleChange()"
-                            @removeRequest="removeTranslation(translationIndex)"
+                            @removeRequest="removeTranslation(translation.id)"
         />
 
       </transition-group>
@@ -119,14 +119,14 @@ export default {
         'undoCurrentLesson',
         'saveQuestion',
         'deleteQuestion',
+        'deleteTranslation',
       ]
     ),
     handleChange: _.debounce(function () {
       this.saveCurrentLesson()
     }, 1000),
-    removeTranslation(translationIndex) {
-      this.currentLesson.translations.splice(translationIndex, 1)
-      this.saveCurrentLesson()
+    removeTranslation(id) {
+      this.deleteTranslation({id})
     },
     addTranslation() {
       let lastFrontId = Math.max(...this.currentLesson.translations.map((e) => e.frontId))

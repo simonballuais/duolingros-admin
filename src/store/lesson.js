@@ -1,6 +1,7 @@
 import { lessonService } from '../service'
 import { propositionService } from '../service'
 import { questionService } from '../service'
+import { translationService } from '../service'
 import Memento from '../misc/memento'
 
 const state = {
@@ -73,6 +74,13 @@ const actions = {
     },
     deleteQuestion({dispatch, state}, {id}) {
         questionService.remove({id})
+            .then(() => {
+                dispatch('updateCurrentLesson', {id: state.currentLesson.id})
+            })
+            .catch(() => null)
+    },
+    deleteTranslation({dispatch, state}, {id}) {
+        translationService.remove({id})
             .then(() => {
                 dispatch('updateCurrentLesson', {id: state.currentLesson.id})
             })

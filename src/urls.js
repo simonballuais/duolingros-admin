@@ -8,6 +8,8 @@ const urls = {
     'lesson': 'lessons/{id}',
     'propositions': 'propositions',
     'proposition': 'propositions/{id}',
+    'translations': 'translations',
+    'translation': 'translations/{id}',
     'questions': 'questions',
     'question': 'questions/{id}',
     'book_lessons': 'book_lessons',
