@@ -62,7 +62,7 @@
           <div class="input-group-append">
             <button type="button"
                     class="btn btn-outline-danger remove-proposition"
-                    @click="removeProposition(index)"
+                    @click="removeProposition(proposition.id)"
                     v-if="question.propositions.length > 1"
                     >
                     X
@@ -88,10 +88,9 @@ export default {
     Checkbox,
   },
   methods: {
-    ...mapActions('lesson', ['saveProposition']),
-    removeProposition (propositionIndex) {
-      this.question.propositions.splice(propositionIndex, 1)
-      this.$emit('change')
+    ...mapActions('lesson', ['saveProposition', 'deleteProposition']),
+    removeProposition (id) {
+      this.deleteProposition({id});
     },
     addProposition (question) {
       this.saveProposition({proposition: {

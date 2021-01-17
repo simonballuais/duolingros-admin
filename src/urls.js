@@ -7,6 +7,7 @@ const urls = {
     'lessons': 'lessons',
     'lesson': 'lessons/{id}',
     'propositions': 'propositions',
+    'proposition': 'propositions/{id}',
     'questions': 'questions',
     'book_lessons': 'book_lessons',
 }
@@ -18,6 +19,7 @@ const axiosConfigured = axios.create({
 axiosConfigured.defaults.headers.common['Accept'] = 'application/json'
 axiosConfigured.defaults.headers.put['Content-Type'] = 'application/json'
 axiosConfigured.defaults.headers.post['Content-Type'] = 'application/json'
+axiosConfigured.defaults.headers.delete['Content-Type'] = 'application/json'
 
 axiosConfigured.interceptors.response.use(
     function (response) {

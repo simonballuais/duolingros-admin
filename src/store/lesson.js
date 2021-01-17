@@ -57,6 +57,13 @@ const actions = {
             })
             .catch(() => commit('propositionSaveError'))
     },
+    deleteProposition({dispatch, state}, {id}) {
+        propositionService.remove({id})
+            .then(() => {
+                dispatch('updateCurrentLesson', {id: state.currentLesson.id})
+            })
+            .catch(() => null)
+    },
     saveQuestion({dispatch, state}, {question}) {
         questionService.add(question)
             .then(() => {
