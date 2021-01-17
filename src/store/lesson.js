@@ -1,4 +1,6 @@
 import { lessonService } from '../service'
+import { propositionService } from '../service'
+import { questionService } from '../service'
 import Memento from '../misc/memento'
 
 const state = {
@@ -9,6 +11,9 @@ const state = {
     },
     'lessonMemento': Memento(),
     'lessonUndoable': false,
+    addingProposition: false,
+    propositionSaved: false,
+    propositionSaveError: false,
 }
 
 const actions = {
@@ -22,8 +27,6 @@ const actions = {
             })
     },
     updateCurrentLesson({commit}, {id}) {
-        commit('updatingCurrentLesson');
-
         lessonService.fetchById(id)
             .then((lesson) => {
                 commit('currentLessonUpdated', lesson)
@@ -44,6 +47,23 @@ const actions = {
             .then(() => commit('lessonSaved'))
             .catch(() => commit('lessonSaveError'))
     },
+    saveProposition({commit, dispatch, state}, {proposition}) {
+        commit('addingProposition')
+
+        propositionService.add(proposition)
+            .then(() => {
+                commit('propositionSaved')
+                dispatch('updateCurrentLesson', {id: state.currentLesson.id})
+            })
+            .catch(() => commit('propositionSaveError'))
+    },
+    saveQuestion({dispatch, state}, {question}) {
+        questionService.add(question)
+            .then(() => {
+                dispatch('updateCurrentLesson', {id: state.currentLesson.id})
+            })
+            .catch(() => null)
+    },
 }
 
 const mutations = {
@@ -52,9 +72,6 @@ const mutations = {
     },
     lessonsUpdateError(state) {
         state.lessons = []
-    },
-    updatingCurrentLesson(state) {
-        state.currentLesson = null
     },
     currentLessonUpdated(state, lesson) {
         state.currentLesson = lesson
@@ -83,6 +100,21 @@ const mutations = {
     },
     lessonSaveError(state) {
         state.status.savingLesson = false
+    },
+    addingProposition(state) {
+        state.addingProposition = true
+        state.propositionSaved = false
+        state.propositionSaveError = false
+    },
+    propositionSaved(state) {
+        state.addingProposition = false
+        state.propositionSaved = true
+        state.propositionSaveError = false
+    },
+    propositionSaveError(state) {
+        state.addingProposition = false
+        state.propositionSaved = false
+        state.propositionSaveError = true
     },
 }
 

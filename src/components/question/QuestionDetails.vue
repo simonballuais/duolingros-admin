@@ -9,8 +9,7 @@
                    />
       </div>
 
-      <Checkbox label="No picture"
-                v-model="question.noPicture"
+      <Checkbox v-model="question.noPictures"
                 @keyup="$emit('change')"
                 @input="$emit('change')"
                 />
@@ -33,7 +32,7 @@
     </div>
 
     <ul>
-      <li v-for="(proposition, index) in question.propositionList"
+      <li v-for="(proposition, index) in question.propositions"
           class="proposition"
           :key="index"
           >
@@ -41,20 +40,21 @@
         <div class="input-group">
           <button type="button"
                   class="btn btn-outline-success add-proposition"
-                  @click="addProposition()"
-                  v-if="index == question.propositionList.length - 1"
+                  @click="addProposition(question)"
+                  v-if="index == question.propositions.length - 1"
                   >
             +
           </button>
+
 
           <TextInput placeholder="Text"
                      v-model="proposition.text"
                      @keyup="$emit('change')"
                      type="text"
+                     small
                      />
 
-          <Checkbox placeholder="Text"
-                    v-model="proposition.rightAnswer"
+          <Checkbox v-model="proposition.rightAnswer"
                     @keyup="$emit('change')"
                     @input="$emit('change')"
                     />
@@ -63,6 +63,7 @@
             <button type="button"
                     class="btn btn-outline-danger remove-proposition"
                     @click="removeProposition(index)"
+                    v-if="question.propositions.length > 1"
                     >
                     X
             </button>
@@ -74,6 +75,8 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
+
 import TextInput from '../form/TextInput'
 import Checkbox from '../form/Checkbox'
 
@@ -85,18 +88,26 @@ export default {
     Checkbox,
   },
   methods: {
+    ...mapActions('lesson', ['saveProposition']),
     removeProposition (propositionIndex) {
-      this.question.propositionList.splice(propositionIndex, 1)
+      this.question.propositions.splice(propositionIndex, 1)
       this.$emit('change')
     },
-    addProposition () {
-      this.question.propositionList.push({
-        text: '',
-        rightAnswer: true,
-        image: '',
-      })
-      this.$emit('change')
-    }
+    addProposition (question) {
+      this.saveProposition({proposition: {
+          text: '',
+          rightAnswer: false,
+          image: '',
+          question: '/api/questions/' + question.id,
+      }})
+    },
+  },
+  created() {
+    this.$store.subscribe((mutation) => {
+      if (mutation.type === 'lesson/propositionSaved') {
+        window.console.log('COCUOC proposition')
+      }
+    });
   }
 }
 </script>

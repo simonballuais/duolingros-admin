@@ -3,9 +3,10 @@
     <label>{{ label }}</label>
     <input class="form-control"
            type="checkbox"
-           @input="updateInputValue($event.target.value)"
+           @input="updateInputValue($event.target.checked)"
            @keyup="$emit('keyup', value)"
            :class="{ big, small }"
+           :checked="value"
            >
   </div>
 </template>
@@ -30,8 +31,8 @@ export default {
   },
   methods: {
     updateInputValue(value) {
-      this.$emit('input', value)
       this.inputValue = value
+      this.$emit('input', value)
     },
   },
   computed: {

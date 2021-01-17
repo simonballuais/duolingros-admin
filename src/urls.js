@@ -6,6 +6,8 @@ const urls = {
     'logout': 'logout',
     'lessons': 'lessons',
     'lesson': 'lessons/{id}',
+    'propositions': 'propositions',
+    'questions': 'questions',
     'book_lessons': 'book_lessons',
 }
 
@@ -13,9 +15,9 @@ const axiosConfigured = axios.create({
     baseURL: 'api',
 });
 
-axiosConfigured.defaults.headers.common['Content-Type'] = 'application/json'
 axiosConfigured.defaults.headers.common['Accept'] = 'application/json'
 axiosConfigured.defaults.headers.put['Content-Type'] = 'application/json'
+axiosConfigured.defaults.headers.post['Content-Type'] = 'application/json'
 
 axiosConfigured.interceptors.response.use(
     function (response) {

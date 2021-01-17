@@ -15,11 +15,9 @@ export default function () {
                 return null
             }
 
-            window.console.log('Undoing to', previousStep)
             return JSON.parse(previousStep)
         },
         reset(state) {
-            window.console.log('Resetting to ', JSON.stringify(state))
             history = [JSON.stringify(state)]
         },
         undoable() {

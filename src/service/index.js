@@ -1,3 +1,5 @@
 export * from './user.service'
 export * from './lesson.service'
+export * from './proposition.service'
+export * from './question.service'
 export * from './book_lesson.service'

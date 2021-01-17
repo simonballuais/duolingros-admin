@@ -26,20 +26,20 @@
     </div>
 
     <ul>
-      <li v-for="(answer, index) in translation.answerList"
+      <li v-for="(answer, index) in translation.answers"
           class="answer"
           :key="index">
         <div class="input-group">
           <button type="button"
                   class="btn btn-outline-success add-answer"
                   @click="addAnswer()"
-                  v-if="index == translation.answerList.length - 1"
+                  v-if="index == translation.answers.length - 1"
                   >
             +
           </button>
 
           <TextInput placeholder="Possible answer"
-                     v-model="translation.answerList[index]"
+                     v-model="translation.answers[index]"
                      :small="true"
                      @keyup="$emit('change')"
                      />
@@ -47,7 +47,7 @@
             <button type="button"
                     class="btn btn-outline-danger remove-answer"
                     @click="removeAnswer(index)"
-                    v-if="translation.answerList.length > 1"
+                    v-if="translation.answers.length > 1"
                     >
               X
             </button>
@@ -69,11 +69,11 @@ export default {
   },
   methods: {
     removeAnswer (answerIndex) {
-      this.translation.answerList.splice(answerIndex, 1)
+      this.translation.answers.splice(answerIndex, 1)
       this.$emit('change')
     },
     addAnswer () {
-      this.translation.answerList.push('')
+      this.translation.answers.push('')
       this.$emit('change')
     }
   }

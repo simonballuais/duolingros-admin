@@ -39,12 +39,12 @@
                    />
       </div>
 
-      <hr v-if="currentLesson.translationList" />
-      <h3 v-if="currentLesson.translationList">Translations</h3>
+      <hr v-if="currentLesson.translations" />
+      <h3 v-if="currentLesson.translations">Translations</h3>
 
       <transition-group name="translation-list" tag="div">
-        <TranslationDetails v-for="(translation, translationIndex) in translationList"
-                            :key="translation.id"
+        <TranslationDetails v-for="(translation, translationIndex) in translations"
+                            :key="`${translation.id}-${translation.frontId}`"
                             :translation="translation"
                             @change="handleChange()"
                             @removeRequest="removeTranslation(translationIndex)"
@@ -52,23 +52,29 @@
 
       </transition-group>
 
-      <button class="btn btn-outline-primary ml-1"
+      <button class="btn btn-outline-success ml-1"
               @click="addTranslation"
               >
         <font-awesome-icon icon="plus" />
       </button>
 
-      <hr v-if="currentLesson.questionList" />
-      <h3 v-if="currentLesson.questionList">Questions</h3>
+      <hr v-if="currentLesson.questions" />
+      <h3 v-if="currentLesson.questions">Questions</h3>
 
       <transition-group name="question-list" tag="div">
-        <QuestionDetails v-for="(question, questionIndex) in questionList"
-                            :key="question.id"
+        <QuestionDetails v-for="(question, questionIndex) in questions"
+                            :key="`${question.id}-${question.frontId}`"
                             :question="question"
                             @change="handleChange()"
                             @removeRequest="removeQuestion(questionIndex)"
         />
       </transition-group>
+
+      <button class="btn btn-outline-success ml-1"
+              @click="addQuestion"
+              >
+        <font-awesome-icon icon="plus" />
+      </button>
     </Form>
   </div>
 </template>
@@ -94,38 +100,52 @@ export default {
   },
   computed: {
     ...mapState('lesson', ['status', 'currentLesson', 'lessonUndoable']),
-    translationList() {
-      return this.currentLesson.translationList.slice().sort(
+    translations() {
+      return this.currentLesson.translations.slice().sort(
         (a, b) => a.difficulty - b.difficulty
       )
     },
-    questionList() {
-      return this.currentLesson.questionList.slice().sort(
+    questions() {
+      return this.currentLesson.questions.slice().sort(
         (a, b) => a.difficulty - b.difficulty
       )
     },
   },
   methods: {
-    ...mapActions('lesson', ['saveCurrentLesson', 'undoCurrentLesson']),
+    ...mapActions('lesson', ['saveCurrentLesson', 'undoCurrentLesson', 'saveQuestion']),
     handleChange: _.debounce(function () {
       this.saveCurrentLesson()
     }, 1000),
     removeTranslation(translationIndex) {
-      this.currentLesson.translationList.splice(translationIndex, 1)
+      this.currentLesson.translations.splice(translationIndex, 1)
       this.saveCurrentLesson()
     },
     addTranslation() {
-      let lastId = Math.max(...this.currentLesson.translationList.map((e) => e.id))
+      let lastFrontId = Math.max(...this.currentLesson.translations.map((e) => e.frontId))
 
-      this.currentLesson.translationList.push({
-        id: lastId + 1,
+      this.currentLesson.translations.push({
+        frontId: lastFrontId + 1,
         text: '',
         difficulty: 1,
-        answerList: [''],
+        answers: [''],
       })
 
       this.handleChange()
-    }
+    },
+    addQuestion() {
+      this.saveQuestion({question: {
+        lesson: '/api/lessons/' + this.currentLesson.id,
+        text: '',
+        difficulty: 1,
+      }})
+    },
+  },
+  created() {
+    this.$store.subscribe((mutation) => {
+      if (mutation.type === 'lesson/questionSaved') {
+        window.console.log('COCUOC question')
+      }
+    });
   }
 }
 </script>

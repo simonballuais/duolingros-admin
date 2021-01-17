@@ -33,8 +33,9 @@ function fetchById (id) {
 function save(lesson) {
     return new Promise((resolve, reject) => {
         Urls.getAxios()
-            .put(Urls.get('lesson', {id: lesson.id}),
-                   JSON.stringify(lesson)
+            .put(
+                Urls.get('lesson', {id: lesson.id}),
+                JSON.stringify(lesson)
             )
             .then((response) => {
                 resolve(response.data)
