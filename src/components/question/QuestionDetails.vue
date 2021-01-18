@@ -139,10 +139,30 @@ export default {
     this.canvas = document.getElementById('pasteCanvas');
     let context = this.canvas.getContext('2d');
     this.pasteImage = new Image()
-      window.console.log(this.pasteImage);
 
     this.pasteImage.onload = () => {
-      context.drawImage(this.pasteImage, 0, 0);
+      window.console.log(this.pasteImage);
+      let smallestSize = Math.min(this.pasteImage.width, this.pasteImage.height)
+      let transformRatio = this.canvas.height / smallestSize
+
+      let destinationSize = {
+        width: this.pasteImage.width * transformRatio,
+        height: this.pasteImage.height * transformRatio
+      }
+
+      context.drawImage(
+        this.pasteImage,
+
+        0,
+        0,
+        this.pasteImage.width,
+        this.pasteImage.height,
+
+        (this.canvas.width - destinationSize.width) / 2,
+        (this.canvas.height - destinationSize.height) / 2,
+        destinationSize.width,
+        destinationSize.height
+      );
       let base64Image = this.canvas.toDataURL('image/png');
       this.pasteImage.targetEntity.image = base64Image
       this.$emit('change')
