@@ -9,12 +9,6 @@
                    />
       </div>
 
-      <TextInput placeholder="Text"
-                 v-model="translation.difficulty"
-                 @keyup="$emit('change')"
-                 type="number"
-                 />
-
       <div class="input-group-append">
         <button type="button"
                 class="btn btn-outline-danger remove-translation"

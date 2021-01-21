@@ -14,13 +14,6 @@
                 @input="$emit('change')"
                 />
 
-      <TextInput placeholder="Text"
-                 v-model="question.difficulty"
-                 @keyup="$emit('change')"
-                 @input="$emit('change')"
-                 type="number"
-                 />
-
       <div class="input-group-append">
         <button type="button"
                 class="btn btn-outline-danger remove-question"
@@ -38,10 +31,11 @@
           >
 
         <div class="input-group">
-          <button type="button"
+          <Button type="button"
                   class="btn btn-outline-success add-proposition"
                   @click="addProposition(question)"
                   v-if="index === question.propositions.length - 1"
+                  spinWhenClicked
                   >
             <span v-if="!question.saving">+</span>
             <span v-if="question.saving"
@@ -62,6 +56,7 @@
 
           <TextInput placeholder="Text"
                      v-model="proposition.image"
+                     v-if="!question.noImages"
                      @paste="pasteImg(proposition, $event)"
                      type="text"
                      small
@@ -94,6 +89,7 @@ import {mapActions} from 'vuex'
 
 import TextInput from '../form/TextInput'
 import Checkbox from '../form/Checkbox'
+import Button from '../form/Button'
 
 export default {
   name: 'QuestionDetails',
@@ -107,6 +103,7 @@ export default {
   components: {
     TextInput,
     Checkbox,
+    Button,
   },
   methods: {
     ...mapActions('lesson', ['saveProposition', 'deleteProposition']),
@@ -141,7 +138,6 @@ export default {
     this.pasteImage = new Image()
 
     this.pasteImage.onload = () => {
-      window.console.log(this.pasteImage);
       let smallestSize = Math.min(this.pasteImage.width, this.pasteImage.height)
       let transformRatio = this.canvas.height / smallestSize
 
@@ -169,13 +165,6 @@ export default {
     };
 
   },
-  created() {
-    this.$store.subscribe((mutation) => {
-      if (mutation.type === 'lesson/propositionSaved') {
-        window.console.log('COCUOC proposition')
-      }
-    });
-  }
 }
 </script>
 
@@ -216,6 +205,5 @@ ul:hover
 
 img
   margin: 3px 3px 3px 20px
-  border-radius: 4px
-  box-shadow: 0 0 20px black
+  border-radius: 5px
 </style>

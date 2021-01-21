@@ -41,42 +41,11 @@
                    />
       </div>
 
-      <hr v-if="currentLesson.translations" />
-      <h3 v-if="currentLesson.translations">Translations</h3>
-
-      <transition-group name="translation-list" tag="div">
-        <TranslationDetails v-for="(translation, translationIndex) in translations"
-                            :key="`${translation.id}-${translation.frontId}`"
-                            :translation="translation"
-                            @change="handleChange()"
-                            @removeRequest="removeTranslation(translation.id)"
-        />
-
-      </transition-group>
-
-      <button class="btn btn-outline-success ml-1"
-              @click="addTranslation"
-              >
-        <font-awesome-icon icon="plus" />
-      </button>
-
-      <hr v-if="currentLesson.questions" />
-      <h3 v-if="currentLesson.questions">Questions</h3>
-
-      <transition-group name="question-list" tag="div">
-        <QuestionDetails v-for="(question, questionIndex) in questions"
-                            :key="`${question.id}-${question.frontId}`"
-                            :question="question"
-                            @change="handleChange()"
-                            @removeRequest="removeQuestion(question.id)"
-        />
-      </transition-group>
-
-      <button class="btn btn-outline-success ml-1"
-              @click="addQuestion"
-              >
-        <font-awesome-icon icon="plus" />
-      </button>
+      <DifficultyGroup v-for="difficulty in 5"
+                       :key="difficulty"
+                       :difficulty="difficulty"
+                       :lesson="currentLesson"
+                       />
     </Form>
   </div>
 </template>
@@ -88,8 +57,7 @@ import _ from 'lodash'
 import Form from '../form/Form'
 import TextInput from '../form/TextInput'
 import Spinner from '../misc/Spinner'
-import TranslationDetails from '../translation/TranslationDetails'
-import QuestionDetails from '../question/QuestionDetails'
+import DifficultyGroup from '../lesson/DifficultyGroup'
 
 export default {
   name: 'LessonDetails',
@@ -97,21 +65,13 @@ export default {
     Form,
     TextInput,
     Spinner,
-    TranslationDetails,
-    QuestionDetails,
+    DifficultyGroup,
   },
   computed: {
-    ...mapState('lesson', ['status', 'currentLesson', 'lessonUndoable']),
-    translations() {
-      return this.currentLesson.translations.slice().sort(
-        (a, b) => a.difficulty - b.difficulty
-      )
-    },
-    questions() {
-      return this.currentLesson.questions.slice().sort(
-        (a, b) => a.difficulty - b.difficulty
-      )
-    },
+    ...mapState(
+      'lesson',
+      ['status', 'currentLesson', 'lessonUndoable']
+    ),
   },
   methods: {
     ...mapActions(
@@ -119,39 +79,11 @@ export default {
       [
         'saveCurrentLesson',
         'undoCurrentLesson',
-        'saveQuestion',
-        'deleteQuestion',
-        'deleteTranslation',
       ]
     ),
     handleChange: _.debounce(function () {
       this.saveCurrentLesson()
     }, 1000),
-    removeTranslation(id) {
-      this.deleteTranslation({id})
-    },
-    addTranslation() {
-      let lastFrontId = Math.max(...this.currentLesson.translations.map((e) => e.frontId))
-
-      this.currentLesson.translations.push({
-        frontId: lastFrontId + 1,
-        text: '',
-        difficulty: 1,
-        answers: [''],
-      })
-
-      this.handleChange()
-    },
-    addQuestion() {
-      this.saveQuestion({question: {
-        lesson: '/api/lessons/' + this.currentLesson.id,
-        text: '',
-        difficulty: 1,
-      }})
-    },
-    removeQuestion(id) {
-      this.deleteQuestion({id})
-    },
   },
   created() {
     this.$store.subscribe((mutation) => {
@@ -169,8 +101,12 @@ export default {
 </style>
 
 <style lang="sass" scoped>
+h2
+  padding: 5px
+  margin-top: 5px
 h3
   margin-bottom: 24px
+  color: #555
 
 .translation-list-move
   transition: transform 1s
@@ -180,4 +116,7 @@ h3
 
 canvas
   display: none
+
+div.difficulty-group
+  margin-left: 16px
 </style>
