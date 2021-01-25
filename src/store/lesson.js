@@ -2,9 +2,11 @@ import { lessonService } from '../service'
 import { propositionService } from '../service'
 import { questionService } from '../service'
 import { translationService } from '../service'
+import { bookLessonService } from '../service'
 import Memento from '../misc/memento'
 
 const state = {
+    'bookLessons': [],
     'lessons': [],
     'currentLesson': null,
     'status': {
@@ -79,10 +81,40 @@ const actions = {
             })
             .catch(() => null)
     },
+    saveTranslation({dispatch, state}, {translation}) {
+        translationService.add(translation)
+            .then(() => {
+                dispatch('updateCurrentLesson', {id: state.currentLesson.id})
+            })
+            .catch(() => null)
+    },
     deleteTranslation({dispatch, state}, {id}) {
         translationService.remove({id})
             .then(() => {
                 dispatch('updateCurrentLesson', {id: state.currentLesson.id})
+            })
+            .catch(() => null)
+    },
+    loadAllBookLessons({commit}) {
+        bookLessonService.fetchAll()
+            .then((bookLessons) => {
+                commit('bookLessonsUpdated', bookLessons)
+            })
+            .catch(() => {
+                commit('bookLessonsUpdateError')
+            })
+    },
+    saveBookLesson({dispatch}, {bookLesson}) {
+        bookLessonService.add(bookLesson)
+            .then(() => {
+                dispatch('loadAllBookLessons')
+            })
+            .catch(() => null)
+    },
+    saveLesson({dispatch}, {lesson}) {
+        lessonService.add(lesson)
+            .then(() => {
+                dispatch('loadAllBookLessons')
             })
             .catch(() => null)
     },
@@ -137,6 +169,12 @@ const mutations = {
         state.addingProposition = false
         state.propositionSaved = false
         state.propositionSaveError = true
+    },
+    bookLessonsUpdated(state, bookLessons) {
+        state.bookLessons = bookLessons
+    },
+    bookLessonsUpdateError(state) {
+        state.bookLessons = []
     },
 }
 

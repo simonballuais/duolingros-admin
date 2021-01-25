@@ -1,12 +1,32 @@
 <template>
   <nav class="bg-light sidebar">
+    <h1>
+      Book lessons
+
+      <Button class="btn btn-outline-success ml-1"
+              @click="addBookLesson()"
+              spinWhenClicked
+              >
+        <font-awesome-icon icon="plus" />
+      </Button>
+    </h1>
     <div v-for="bookLesson in bookLessons"
          :key="bookLesson.id"
          class="book-lesson"
          >
-     <h1 class="book-lesson-title" href="#">
-       {{ bookLesson.title }}
-     </h1>
+     <h2 href="#">
+       <span>
+        {{ bookLesson.title }}
+       </span>
+
+        <Button class="btn btn-outline-success add-lesson"
+                @click="addLesson(bookLesson.id)"
+                small
+                spinWhenClicked
+                >
+          <font-awesome-icon icon="plus" />
+        </Button>
+     </h2>
 
       <ul class="nav flex-column">
         <Lesson v-for="lesson in bookLesson.lessonList"
@@ -21,21 +41,43 @@
 
 <script>
 import {mapState, mapActions} from 'vuex'
+import Button from '../form/Button'
 import Lesson from '../lesson/Lesson'
 
 export default {
   components: {
     Lesson,
+    Button,
   },
   name: 'SideMenu',
   props: ['title'],
   computed: {
-    ...mapState('lesson', ['lessons']),
-    ...mapState('bookLesson', ['bookLessons']),
+    ...mapState('lesson', ['lessons', 'bookLessons']),
   },
   methods: {
-    ...mapActions('lesson', ['updateLessons']),
-    ...mapActions('bookLesson', ['loadAllBookLessons']),
+    ...mapActions(
+      'lesson',
+      [
+        'updateLessons',
+        'saveBookLesson',
+        'saveLesson',
+        'loadAllBookLessons'
+      ]
+    ),
+    addBookLesson() {
+      this.saveBookLesson({bookLesson: {
+          title: 'New lesson',
+          subtitle: '',
+          course: '/api/courses/1',
+      }})
+    },
+    addLesson(bookLessonId) {
+      this.saveLesson({lesson: {
+          title: 'New book lesson',
+          subtitle: '',
+          bookLesson: '/api/book_lessons/' + bookLessonId,
+      }})
+    },
   },
   created() {
     this.loadAllBookLessons()
@@ -43,7 +85,7 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .sidebar
   position: fixed
   overflow-y: scroll
@@ -67,8 +109,28 @@ export default {
   overflow-x: hidden
   overflow-y: auto
 
-.book-lesson-title
+h1
+  font-size: 24px
+
+h2
   font-size: 16px
   text-transform: uppercase
   margin: 0
+  height: 32px
+  width: 100%
+  display: flex
+  align-items: center
+
+  button.add-lesson
+    display: none
+    font-size: 10px
+    width: 32px
+    margin-left: 8px
+
+  span
+    display: block
+
+  &:hover
+    button.add-lesson
+      display: inline-block
 </style>

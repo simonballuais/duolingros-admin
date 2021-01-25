@@ -3,17 +3,17 @@
           class="btn btn-outline-primary"
           @click="clicked"
           >
-    <Spinner v-if="spinning" small />
+    <slot v-if="!spinning"></slot>
+    <span class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+          v-if="spinning"
+    ></span>
   </button>
 </template>
 
-  <script>
-import Spinner from '../misc/Spinner'
-
+<script>
 export default {
-  components: {
-    Spinner,
-  },
   props: {
     'spinWhenClicked': {
       type: Boolean,
@@ -36,3 +36,12 @@ export default {
   },
 }
 </script>
+
+<style lang="sass" scoped>
+svg.svg-inline--fa.fa-plus
+  margin-left: -1px
+
+span.spinner-border.spinner-border-sm
+  margin-left: -4px
+  margin-top: 1px
+</style>

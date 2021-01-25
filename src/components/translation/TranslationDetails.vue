@@ -10,12 +10,13 @@
       </div>
 
       <div class="input-group-append">
-        <button type="button"
+        <Button type="button"
                 class="btn btn-outline-danger remove-translation"
                 @click="$emit('removeRequest', this)"
+                spinWhenClicked
                 >
           X
-        </button>
+        </Button>
       </div>
     </div>
 
@@ -24,13 +25,13 @@
           class="answer"
           :key="index">
         <div class="input-group">
-          <button type="button"
+          <Button type="button"
                   class="btn btn-outline-success add-answer"
                   @click="addAnswer()"
                   v-if="index == translation.answers.length - 1"
                   >
-            +
-          </button>
+            <font-awesome-icon icon="plus" />
+          </Button>
 
           <TextInput placeholder="Possible answer"
                      v-model="translation.answers[index]"
@@ -38,13 +39,13 @@
                      @keyup="$emit('change')"
                      />
           <div class="input-group-append">
-            <button type="button"
+            <Button type="button"
                     class="btn btn-outline-danger remove-answer"
                     @click="removeAnswer(index)"
                     v-if="translation.answers.length > 1"
                     >
               X
-            </button>
+            </Button>
           </div>
         </div>
       </li>
@@ -54,12 +55,14 @@
 
 <script>
 import TextInput from '../form/TextInput'
+import Button from '../form/Button'
 
 export default {
   name: 'TranslationDetails',
   props: ['translation'],
   components: {
     TextInput,
+    Button,
   },
   methods: {
     removeAnswer (answerIndex) {

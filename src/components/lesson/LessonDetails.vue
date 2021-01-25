@@ -45,6 +45,7 @@
                        :key="difficulty"
                        :difficulty="difficulty"
                        :lesson="currentLesson"
+                       @change="handleChange"
                        />
     </Form>
   </div>

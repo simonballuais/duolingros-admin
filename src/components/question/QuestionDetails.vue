@@ -15,12 +15,13 @@
                 />
 
       <div class="input-group-append">
-        <button type="button"
+        <Button type="button"
                 class="btn btn-outline-danger remove-question"
                 @click="$emit('removeRequest', this)"
+                spinWhenClicked
                 >
-           <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        </button>
+          X
+        </Button>
       </div>
     </div>
 
@@ -37,14 +38,8 @@
                   v-if="index === question.propositions.length - 1"
                   spinWhenClicked
                   >
-            <span v-if="!question.saving">+</span>
-            <span v-if="question.saving"
-                  class="spinner-border spinner-border-sm"
-                  role="status"
-                  aria-hidden="true"
-                  >
-            </span>
-          </button>
+            <font-awesome-icon icon="plus" />
+          </Button>
 
 
           <TextInput placeholder="Text"
@@ -70,13 +65,14 @@
                     />
 
           <div style="width: 34px">
-            <button type="button"
+            <Button type="button"
                     class="btn btn-outline-danger remove-proposition"
                     @click="removeProposition(proposition.id)"
                     v-if="question.propositions.length > 1"
+                    spinWhenClicked
                     >
                     X
-            </button>
+            </Button>
           </div>
         </div>
       </li>
@@ -111,7 +107,6 @@ export default {
       this.deleteProposition({id});
     },
     addProposition (question) {
-      question.saving = true
       this.saveProposition({proposition: {
           text: '',
           rightAnswer: false,
@@ -185,8 +180,8 @@ ul
 
       .remove-proposition, .add-proposition
         font-size: 10px
-        display: none
         height: 32px
+        display: none
 
         &.add-proposition
           width: 32px

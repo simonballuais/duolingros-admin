@@ -4,11 +4,12 @@
     <div class="difficulty-group" :class="{ folded }">
       <h3>
         Translations
-        <button class="btn btn-outline-success ml-1"
+        <Button class="btn btn-outline-success ml-1"
                 @click="addTranslation(difficulty)"
+                spinWhenClicked
                 >
           <font-awesome-icon icon="plus" />
-        </button>
+        </Button>
       </h3>
 
       <transition-group name="translation-list" tag="div">
@@ -24,11 +25,12 @@
 
       <h3>
         Questions
-        <button class="btn btn-outline-success ml-1"
+        <Button class="btn btn-outline-success ml-1"
                 @click="addQuestion(difficulty)"
+                spinWhenClicked
                 >
           <font-awesome-icon icon="plus" />
-        </button>
+        </Button>
       </h3>
 
       <transition-group name="question-list" tag="div">
@@ -50,12 +52,14 @@ import {mapActions} from 'vuex'
 
 import TranslationDetails from '../translation/TranslationDetails'
 import QuestionDetails from '../question/QuestionDetails'
+import Button from '../form/Button'
 
 export default {
   name: 'LessonDetails',
   components: {
     TranslationDetails,
     QuestionDetails,
+    Button,
   },
   data() {
     return {
@@ -77,6 +81,7 @@ export default {
       'lesson',
       [
         'saveQuestion',
+        'saveTranslation',
         'deleteQuestion',
         'deleteTranslation',
       ]
@@ -91,20 +96,12 @@ export default {
         (a) => a.difficulty === difficulty
       )
     },
-    removeTranslation(id) {
-      this.deleteTranslation({id})
-    },
     addTranslation(difficulty) {
-      let lastFrontId = Math.max(...this.lesson.translations.map((e) => e.frontId))
-
-      this.lesson.translations.push({
-        frontId: lastFrontId + 1,
+      this.saveTranslation({translation: {
+        lesson: '/api/lessons/' + this.lesson.id,
         text: '',
         difficulty: difficulty,
-        answers: [''],
-      })
-
-      this.handleChange()
+      }})
     },
     addQuestion(difficulty) {
       this.saveQuestion({question: {
@@ -115,6 +112,9 @@ export default {
     },
     removeQuestion(id) {
       this.deleteQuestion({id})
+    },
+    removeTranslation(id) {
+      this.deleteTranslation({id})
     },
     toggleFold() {
       this.folded = !this.folded
@@ -127,6 +127,8 @@ export default {
 h2
   padding: 5px
   margin-top: 5px
+  cursor: pointer
+
 h3
   margin-bottom: 24px
   color: #555

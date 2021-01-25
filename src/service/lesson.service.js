@@ -4,6 +4,7 @@ export const lessonService = {
     fetchAll,
     fetchById,
     save,
+    add,
 }
 
 function fetchAll () {
@@ -35,6 +36,21 @@ function save(lesson) {
         Urls.getAxios()
             .put(
                 Urls.get('lesson', {id: lesson.id}),
+                JSON.stringify(lesson)
+            )
+            .then((response) => {
+                resolve(response.data)
+            }).catch(() => {
+                reject()
+            })
+    });
+}
+
+function add(lesson) {
+    return new Promise((resolve, reject) => {
+        Urls.getAxios()
+            .post(
+                Urls.get('lessons'),
                 JSON.stringify(lesson)
             )
             .then((response) => {
