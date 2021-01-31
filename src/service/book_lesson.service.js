@@ -4,6 +4,7 @@ export const bookLessonService = {
     add,
     fetchAll,
     patch,
+    remove,
 }
 
 function add (bookLesson) {
@@ -48,3 +49,14 @@ function fetchAll () {
     });
 }
 
+function remove (id) {
+    return new Promise((resolve, reject) => {
+        Urls.getAxios()
+            .delete(Urls.get('book_lesson', id))
+            .then((response) => {
+                resolve(response.data)
+            }).catch(() => {
+                reject()
+            })
+    });
+}

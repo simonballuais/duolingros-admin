@@ -38,6 +38,15 @@ const actions = {
                 commit('currentLessonUpdateError')
             })
     },
+    deleteLesson({commit, dispatch}, {id}) {
+        commit('savingLesson')
+
+        lessonService.remove({id})
+            .then(() => {
+                dispatch('loadAllBookLessons')
+            })
+            .catch(() => null)
+    },
     undoCurrentLesson({commit, dispatch, state}) {
         commit('currentLessonUndone')
         state.lessonMemento.undo()
@@ -112,9 +121,20 @@ const actions = {
             .catch(() => null)
     },
     patchBookLesson({commit}, {id, data}) {
+        commit('savingLesson')
+
         bookLessonService.patch(id, data)
             .then((bookLessons) => {
                 commit('lessonSaved', bookLessons)
+            })
+            .catch(() => null)
+    },
+    deleteBookLesson({commit}, {id}) {
+        commit('savingLesson')
+
+        bookLessonService.remove({id})
+            .then(() => {
+                commit('removeLocalBookLesson', id)
             })
             .catch(() => null)
     },
@@ -183,6 +203,9 @@ const mutations = {
     bookLessonsUpdateError(state) {
         state.bookLessons = []
     },
+    removeLocalBookLesson(state, id) {
+        state.bookLessons = state.bookLessons.filter(e => e.id !== id)
+    }
 }
 
 export const lesson = {

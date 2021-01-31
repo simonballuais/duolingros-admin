@@ -9,6 +9,7 @@
               >
         <font-awesome-icon icon="plus" />
       </Button>
+
     </h1>
     <div v-for="bookLesson in bookLessons"
          :key="bookLesson.id"
@@ -27,6 +28,14 @@
                 >
           <font-awesome-icon icon="plus" />
        </Button>
+
+      <Button class="btn btn-outline-danger remove-book-lesson"
+              @click="deleteBookLesson({id: bookLesson.id})"
+              spinWhenClicked
+              small
+              >
+        <font-awesome-icon icon="trash" />
+      </Button>
      </h2>
 
       <ul class="nav flex-column">
@@ -65,6 +74,7 @@ export default {
         'updateLessons',
         'saveBookLesson',
         'patchBookLesson',
+        'deleteBookLesson',
         'saveLesson',
         'loadAllBookLessons'
       ]
@@ -78,7 +88,7 @@ export default {
     },
     addLesson(bookLessonId) {
       this.saveLesson({lesson: {
-          title: 'New book lesson',
+          title: 'New lesson',
           subtitle: '',
           bookLesson: '/api/book_lessons/' + bookLessonId,
       }})
@@ -101,7 +111,7 @@ export default {
 .sidebar
   position: fixed
   overflow-y: scroll
-  width: 270px
+  width: 350px
   top: 0
   bottom: 0
   left: 0
@@ -133,16 +143,16 @@ h2
   display: flex
   align-items: center
 
-  button.add-lesson
-    display: none
+  button.add-lesson,button.remove-book-lesson
     font-size: 10px
     width: 32px
     margin-left: 8px
+    display: none
 
   span
     display: block
 
   &:hover
-    button.add-lesson
+    button.add-lesson,button.remove-book-lesson
       display: inline-block
 </style>

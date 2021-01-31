@@ -5,6 +5,7 @@ export const lessonService = {
     fetchById,
     save,
     add,
+    remove,
 }
 
 function fetchAll () {
@@ -53,6 +54,18 @@ function add(lesson) {
                 Urls.get('lessons'),
                 JSON.stringify(lesson)
             )
+            .then((response) => {
+                resolve(response.data)
+            }).catch(() => {
+                reject()
+            })
+    });
+}
+
+function remove (id) {
+    return new Promise((resolve, reject) => {
+        Urls.getAxios()
+            .delete(Urls.get('lesson', id))
             .then((response) => {
                 resolve(response.data)
             }).catch(() => {

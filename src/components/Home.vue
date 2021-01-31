@@ -52,7 +52,7 @@ export default {
 <style lang="sass">
 div.container-fluid
   padding-top: 48px
-  padding-left: 280px
+  padding-left: 360px
 
 main
   min-height: 500px
