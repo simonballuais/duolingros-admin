@@ -111,6 +111,13 @@ const actions = {
             })
             .catch(() => null)
     },
+    patchBookLesson({commit}, {id, data}) {
+        bookLessonService.patch(id, data)
+            .then((bookLessons) => {
+                commit('lessonSaved', bookLessons)
+            })
+            .catch(() => null)
+    },
     saveLesson({dispatch}, {lesson}) {
         lessonService.add(lesson)
             .then(() => {

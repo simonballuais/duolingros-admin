@@ -15,17 +15,18 @@
          class="book-lesson"
          >
      <h2 href="#">
-       <span>
-        {{ bookLesson.title }}
-       </span>
+       <TextInput v-model="bookLesson.title"
+                  @keyup="updateBookLessonTitle(bookLesson)"
+                 >
+       </TextInput>
 
         <Button class="btn btn-outline-success add-lesson"
-                @click="addLesson(bookLesson.id)"
+               @click="addLesson(bookLesson.id)"
                 small
                 spinWhenClicked
                 >
           <font-awesome-icon icon="plus" />
-        </Button>
+       </Button>
      </h2>
 
       <ul class="nav flex-column">
@@ -42,12 +43,15 @@
 <script>
 import {mapState, mapActions} from 'vuex'
 import Button from '../form/Button'
+import TextInput from '../form/TextInput'
 import Lesson from '../lesson/Lesson'
+import _ from 'lodash'
 
 export default {
   components: {
     Lesson,
     Button,
+    TextInput,
   },
   name: 'SideMenu',
   props: ['title'],
@@ -60,6 +64,7 @@ export default {
       [
         'updateLessons',
         'saveBookLesson',
+        'patchBookLesson',
         'saveLesson',
         'loadAllBookLessons'
       ]
@@ -78,6 +83,13 @@ export default {
           bookLesson: '/api/book_lessons/' + bookLessonId,
       }})
     },
+    updateBookLessonTitle: _.debounce(function (bookLesson) {
+      window.console.log('coucou')
+      this.patchBookLesson({
+        id: bookLesson.id,
+        data: {title: bookLesson.title},
+      })
+    }, 1000),
   },
   created() {
     this.loadAllBookLessons()
