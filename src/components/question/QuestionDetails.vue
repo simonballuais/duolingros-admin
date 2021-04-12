@@ -1,5 +1,6 @@
 <template>
   <div class="question">
+    <hr>
     <div class="input-group">
       <div class="input-group-prepend flex-grow-1">
         <TextInput placeholder="Text"
@@ -9,7 +10,16 @@
                    />
       </div>
 
+      <br>
+      No pic
       <Checkbox v-model="question.noPictures"
+                @keyup="$emit('change')"
+                @input="$emit('change')"
+                />
+
+      |
+      Gasy -> fr
+      <Checkbox v-model="question.direction"
                 @keyup="$emit('change')"
                 @input="$emit('change')"
                 />
@@ -47,17 +57,21 @@
                      @keyup="$emit('change')"
                      type="text"
                      small
+                     :style="{'background-color': question.answer ? 'white' : 'pink'}"
                      />
 
           <TextInput placeholder="Text"
                      v-model="proposition.image"
-                     v-if="!question.noImages"
+                     v-if="!question.noPictures"
                      @paste="pasteImg(proposition, $event)"
+                     :style="{'background-color': proposition.image ? 'white' : 'pink'}"
                      type="text"
                      small
                      />
 
-          <img :src="proposition.image" />
+          <img :src="proposition.image" 
+                     v-if="!question.noPictures"
+          />
 
           <Checkbox v-model="proposition.rightAnswer"
                     @keyup="$emit('change')"
@@ -102,7 +116,11 @@ export default {
     Button,
   },
   methods: {
-    ...mapActions('lesson', ['saveProposition', 'deleteProposition']),
+    ...mapActions(
+      'lesson', [
+      'saveProposition',
+      'deleteProposition'
+      ]),
     removeProposition (id) {
       this.deleteProposition({id});
     },
@@ -170,11 +188,14 @@ export default {
 ul
   list-style: none
   padding: 0
+  margin: 0
 
   li
     margin: 5px 0 0 36px
 
     &.proposition
+      margin: 0
+
       .remove-proposition
         margin-left: 3px
 
@@ -201,4 +222,6 @@ ul:hover
 img
   margin: 3px 3px 3px 20px
   border-radius: 5px
+  width: 3cm
+  height: 3cm
 </style>

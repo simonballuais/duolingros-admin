@@ -79,14 +79,15 @@ export default {
 
 <style lang="sass" scoped>
 .translation
-  margin-top: 24px
+  margin-top: 4px
 
 ul
   list-style: none
   padding: 0
+  margin: 0
 
   li
-    margin: 5px 0 0 36px
+    margin: 0 0 0 36px
 
     &.answer
       .remove-answer, .add-answer

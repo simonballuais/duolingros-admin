@@ -1,6 +1,31 @@
 <template>
   <div>
-    <h2 @click="toggleFold">Difficulty {{ difficulty }}</h2>
+    <h2>
+      Difficulty {{ difficulty }}
+      ({{ getTranslationsOfDifficulty(difficulty).length + getQuestionsOfDifficulty(difficulty).length }} / 20)
+
+      <Button class="btn btn-outline-primary"
+              @click="toggleFold"
+              style="width: 180px;"
+              >
+          V
+      </Button>
+        &nbsp;
+      <Button class="btn btn-outline-primary"
+              @click="duplicateToNextDifficulty(difficulty)"
+              requiresConfirmation
+              style="width: 180px;"
+              >
+          CP to next
+      </Button>
+        &nbsp;
+      <Button class="btn btn-outline-danger"
+              @click="deleteAllOfDifficulty(difficulty)"
+              requiresConfirmation
+              >
+        <font-awesome-icon icon="trash" />
+      </Button>
+    </h2>
     <div class="difficulty-group" :class="{ folded }">
       <h3>
         Translations
@@ -22,6 +47,12 @@
 
       </transition-group>
 
+      <Button class="btn btn-outline-success ml-1"
+              @click="addTranslation(difficulty)"
+              spinWhenClicked
+              >
+        <font-awesome-icon icon="plus" />
+      </Button>
 
       <h3>
         Questions
@@ -41,9 +72,16 @@
                             @removeRequest="removeQuestion(question.id)"
         />
       </transition-group>
+
+      <Button class="btn btn-outline-success ml-1"
+              @click="addQuestion(difficulty)"
+              spinWhenClicked
+              >
+        <font-awesome-icon icon="plus" />
+      </Button>
     </div>
 
-    <hr />
+    <hr style="border-bottom: 3px solid gray" />
   </div>
 </template>
 
@@ -63,7 +101,7 @@ export default {
   },
   data() {
     return {
-      folded: false,
+      folded: true,
     }
   },
   props: {
@@ -80,10 +118,16 @@ export default {
     ...mapActions(
       'lesson',
       [
+        'updateCurrentLesson',
         'saveQuestion',
+        'saveQuestionButDontUpdate',
+        'savePropositionButDontUpdate',
         'saveTranslation',
+        'saveTranslationButDontUpdate',
         'deleteQuestion',
+        'deleteQuestionButDontUpdate',
         'deleteTranslation',
+        'deleteTranslationButDontUpdate',
       ]
     ),
     getTranslationsOfDifficulty(difficulty) {
@@ -101,6 +145,7 @@ export default {
         lesson: '/api/lessons/' + this.lesson.id,
         text: '',
         difficulty: difficulty,
+        answers: [''],
       }})
     },
     addQuestion(difficulty) {
@@ -109,6 +154,18 @@ export default {
         text: '',
         difficulty: difficulty,
       }})
+      .then((newQuestion) =>
+        Promise.all([1, 2, 3].map(
+          () =>
+            this.savePropositionButDontUpdate({proposition: {
+                question: '/api/questions/' + newQuestion.id,
+                image: null,
+                rightAnswer: false,
+                text: '',
+            }})
+          )
+        ).then(() => this.updateCurrentLesson({id: this.lesson.id}))
+      )
     },
     removeQuestion(id) {
       this.deleteQuestion({id})
@@ -118,6 +175,67 @@ export default {
     },
     toggleFold() {
       this.folded = !this.folded
+    },
+    duplicateToNextDifficulty(startDifficulty) {
+      if (startDifficulty === 5) {
+        return
+      }
+
+      const translations = this.getTranslationsOfDifficulty(startDifficulty)
+      const questions = this.getQuestionsOfDifficulty(startDifficulty)
+      let promises = []
+      let propositionPromises = []
+
+      translations.forEach((t) =>
+        promises.push(
+          this.saveTranslationButDontUpdate({translation: {
+            lesson: '/api/lessons/' + this.lesson.id,
+            text: t.text,
+            difficulty: startDifficulty + 1,
+            answers: [...t.answers],
+          }})
+        )
+      )
+
+      questions.forEach((q) =>
+        this.saveQuestionButDontUpdate({question: {
+            lesson: '/api/lessons/' + this.lesson.id,
+            difficulty: startDifficulty + 1,
+            direction: q.direction,
+            noPictures: q.noPictures,
+            text: q.text,
+            propositions: [],
+          }})
+          .then((newQuestion) =>
+            q.propositions.forEach((p) => {
+              propositionPromises.push(
+                this.savePropositionButDontUpdate({proposition: {
+                    question: '/api/questions/' + newQuestion.id,
+                    image: p.image,
+                    rightAnswer: p.rightAnswer,
+                    text: p.text,
+                }})
+              )
+            })
+          )
+      )
+
+      Promise.all(promises).then(() => {
+        this.updateCurrentLesson({id: this.lesson.id})
+        Promise.all(propositionPromises).then(() => this.updateCurrentLesson({id: this.lesson.id}))
+      })
+    },
+    deleteAllOfDifficulty(difficulty) {
+      const translations = this.getTranslationsOfDifficulty(difficulty)
+      const questions = this.getQuestionsOfDifficulty(difficulty)
+      let promises = []
+
+      translations.forEach((t) => promises.push(this.deleteTranslationButDontUpdate({id: t.id})))
+      questions.forEach((q) => promises.push(this.deleteQuestionButDontUpdate({id: q.id})))
+
+      Promise.all(promises).then(() => {
+        this.updateCurrentLesson({id: this.lesson.id})
+      })
     }
   },
 }
@@ -147,7 +265,7 @@ div.difficulty-group
   transition: transform 0.5s, max-height 1s
   overflow: hidden
   transform-origin: top
-  max-height: 2000px
+  max-height: 99000cm
 
   &.folded
     transform: scaleY(0)

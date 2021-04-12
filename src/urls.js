@@ -17,7 +17,7 @@ const urls = {
 }
 
 const axiosConfigured = axios.create({
-    baseURL: 'api',
+    baseURL: 'http://pp-api.coincoin.me/api/',
 });
 
 axiosConfigured.defaults.headers.common['Accept'] = 'application/json'

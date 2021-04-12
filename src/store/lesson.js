@@ -52,11 +52,14 @@ const actions = {
         state.lessonMemento.undo()
         dispatch('saveCurrentLesson')
     },
-    saveCurrentLesson({commit}) {
+    saveCurrentLesson({commit, dispatch}) {
         commit('savingLesson')
 
         lessonService.save(state.currentLesson)
-            .then(() => commit('lessonSaved'))
+            .then(() => {
+                commit('lessonSaved')
+                dispatch('updateCurrentLesson', {id: state.currentLesson.id})
+            })
             .catch(() => commit('lessonSaveError'))
     },
     saveProposition({commit, dispatch, state}, {proposition}) {
@@ -69,6 +72,21 @@ const actions = {
             })
             .catch(() => commit('propositionSaveError'))
     },
+    savePropositionButDontUpdate({commit}, {proposition}) {
+        commit('addingProposition')
+
+        return new Promise((resolve, reject) =>
+            propositionService.add(proposition)
+            .then(() => {
+                commit('propositionSaved')
+                resolve()
+            })
+            .catch(() => {
+                commit('propositionSaveError')
+                reject()
+            })
+        )
+    },
     deleteProposition({dispatch, state}, {id}) {
         propositionService.remove({id})
             .then(() => {
@@ -77,11 +95,23 @@ const actions = {
             .catch(() => null)
     },
     saveQuestion({dispatch, state}, {question}) {
-        questionService.add(question)
-            .then(() => {
-                dispatch('updateCurrentLesson', {id: state.currentLesson.id})
-            })
-            .catch(() => null)
+        return new Promise((resolve, reject) =>
+            questionService.add(question)
+                .then((newQuestion) => {
+                    dispatch('updateCurrentLesson', {id: state.currentLesson.id})
+                    resolve(newQuestion)
+                })
+                .catch(reject)
+        )
+    },
+    saveQuestionButDontUpdate({state}, {question}) {
+        state
+
+        return new Promise((resolve, reject) =>
+            questionService.add(question)
+                .then((questionId) => resolve(questionId))
+                .catch(reject)
+        )
     },
     deleteQuestion({dispatch, state}, {id}) {
         questionService.remove({id})
@@ -90,6 +120,15 @@ const actions = {
             })
             .catch(() => null)
     },
+    deleteQuestionButDontUpdate({state}, {id}) {
+        state
+
+        return new Promise((resolve, reject) =>
+            questionService.remove({id})
+                .then(resolve)
+                .catch(reject)
+        )
+    },
     saveTranslation({dispatch, state}, {translation}) {
         translationService.add(translation)
             .then(() => {
@@ -97,12 +136,30 @@ const actions = {
             })
             .catch(() => null)
     },
+    saveTranslationButDontUpdate({state}, {translation}) {
+        state
+
+        return new Promise((resolve, reject) =>
+            translationService.add(translation)
+                .then(resolve)
+                .catch(reject)
+        )
+    },
     deleteTranslation({dispatch, state}, {id}) {
         translationService.remove({id})
             .then(() => {
                 dispatch('updateCurrentLesson', {id: state.currentLesson.id})
             })
             .catch(() => null)
+    },
+    deleteTranslationButDontUpdate({state}, {id}) {
+        state
+
+        return new Promise((resolve, reject) =>
+            translationService.remove({id})
+                .then(resolve)
+                .catch(reject)
+        )
     },
     loadAllBookLessons({commit}) {
         bookLessonService.fetchAll()
