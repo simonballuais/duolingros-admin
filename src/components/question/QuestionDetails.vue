@@ -6,6 +6,7 @@
         <TextInput placeholder="Text"
                    v-model="question.text"
                    @keyup="$emit('change')"
+                   :style="{'background-color': question.text && question.answer ? 'transparent' : 'pink'}"
                    bold
                    />
       </div>
@@ -57,7 +58,7 @@
                      @keyup="$emit('change')"
                      type="text"
                      small
-                     :style="{'background-color': question.answer ? 'white' : 'pink'}"
+                     :style="{'background-color': proposition.text ? 'white' : 'pink'}"
                      />
 
           <TextInput placeholder="Text"

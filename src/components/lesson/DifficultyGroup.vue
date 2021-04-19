@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div
+    >
     <h2>
       Difficulty {{ difficulty }}
       ({{ getTranslationsOfDifficulty(difficulty).length + getQuestionsOfDifficulty(difficulty).length }} / 20)
@@ -15,6 +16,7 @@
               @click="duplicateToNextDifficulty(difficulty)"
               requiresConfirmation
               style="width: 180px;"
+              v-if="difficulty < 5"
               >
           CP to next
       </Button>
@@ -26,7 +28,11 @@
         <font-awesome-icon icon="trash" />
       </Button>
     </h2>
-    <div class="difficulty-group" :class="{ folded }">
+    <div class="difficulty-group" :class="{ folded }"
+         :style="{
+          'border-left': '15px solid ' + ['green', 'yellow', 'orange', 'red', 'black'][difficulty - 1]
+        }"
+      >
       <h3>
         Translations
         <Button class="btn btn-outline-success ml-1"
@@ -156,11 +162,11 @@ export default {
       }})
       .then((newQuestion) =>
         Promise.all([1, 2, 3].map(
-          () =>
+          (i) =>
             this.savePropositionButDontUpdate({proposition: {
                 question: '/api/questions/' + newQuestion.id,
                 image: null,
-                rightAnswer: false,
+                rightAnswer: i === 1,
                 text: '',
             }})
           )
@@ -261,7 +267,8 @@ canvas
   display: none
 
 div.difficulty-group
-  margin-left: 16px
+  margin-left: 0px
+  padding-left: 16px
   transition: transform 0.5s, max-height 1s
   overflow: hidden
   transform-origin: top

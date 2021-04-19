@@ -6,6 +6,7 @@
                    v-model="translation.text"
                    @keyup="$emit('change')"
                    bold
+                   :style="{'background-color': translation.text ? 'transparent' : 'pink'}"
                    />
       </div>
 
@@ -37,6 +38,7 @@
                      v-model="translation.answers[index]"
                      :small="true"
                      @keyup="$emit('change')"
+                   :style="{'background-color': translation.answers[index] ? 'transparent' : 'pink'}"
                      />
           <div class="input-group-append">
             <Button type="button"

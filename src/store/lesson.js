@@ -255,7 +255,21 @@ const mutations = {
         state.propositionSaveError = true
     },
     bookLessonsUpdated(state, bookLessons) {
-        state.bookLessons = bookLessons
+        state.bookLessons = bookLessons.sort((a, b) => {
+            if (a.courseId === b.courseId) {
+                if (a.order < b.order) {
+                    return -1
+                }
+
+                return 1
+            }
+
+            if (a.courseId < b.courseId) {
+                return -1
+            }
+
+            return 1
+        })
     },
     bookLessonsUpdateError(state) {
         state.bookLessons = []
