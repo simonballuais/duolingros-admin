@@ -111,7 +111,7 @@ export default {
 .sidebar
   position: fixed
   overflow-y: scroll
-  width: 350px
+  width: 500px
   top: 0
   bottom: 0
   left: 0

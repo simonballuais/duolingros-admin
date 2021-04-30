@@ -7,15 +7,16 @@
          v-model="currentLesson.title"
          @input="handleChange()"
          :big="true"
+         class="title"
       />
-      <button class="btn btn-outline-primary ml-2"
+      <button class="btn btn-outline-primary ml-2 undo"
               @click="undoCurrentLesson"
               :disabled="!lessonUndoable"
               >
         <font-awesome-icon icon="undo" />
       </button>
 
-      <button class="btn btn-outline-secondary ml-2"
+      <button class="btn btn-outline-secondary ml-2 save"
               v-if="!status.savingLesson"
               @click="undoCurrentLesson"
               disabled
@@ -120,4 +121,15 @@ canvas
 
 div.difficulty-group
   margin-left: 16px
+
+button.save
+  position: fixed
+  right: 15px
+
+button.undo
+  position: fixed
+  right: 65px
+
+.title
+  margin-right: 100px
 </style>
