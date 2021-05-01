@@ -7,6 +7,8 @@
                    v-model="question.text"
                    @keyup="$emit('change')"
                    :style="{'background-color': question.text && question.answer ? 'transparent' : 'pink'}"
+                   class="hoverable-input"
+                   :tabindex="tabIndexRoot * 10"
                    bold
                    />
       </div>
@@ -30,6 +32,7 @@
                 class="btn btn-outline-danger remove-question"
                 @click="$emit('removeRequest', this)"
                 spinWhenClicked
+                tabindex="-1"
                 >
           X
         </Button>
@@ -58,10 +61,9 @@
                      @keyup="$emit('change')"
                      type="text"
                      small
-                     :style="{
-                        'background-color': proposition.text ? 'white' : 'pink',
-                        'border': proposition.rightAnswer ? '2px solid lightgreen' : '1px solid lightgray'
-                     }"
+                     class="hoverable-input"
+                     :class="{'right-answer': proposition.rightAnswer}"
+                     :tabindex="tabIndexRoot * 10 + index + 1"
                      />
 
           <TextInput placeholder="Text"
@@ -70,6 +72,7 @@
                      @paste="pasteImg(proposition, $event)"
                      :style="{'background-color': proposition.image ? 'white' : 'pink'}"
                      type="text"
+                     class="hoverable-input"
                      small
                      />
 
@@ -83,6 +86,7 @@
                     @click="removeProposition(proposition.id)"
                     v-if="question.propositions.length > 1"
                     spinWhenClicked
+                    tabindex="-1"
                     >
                     X
             </Button>
@@ -108,7 +112,7 @@ export default {
       pasteCanvas: null,
     }
   },
-  props: ['question'],
+  props: ['question', 'tabIndexRoot'],
   components: {
     TextInput,
     Checkbox,
@@ -223,4 +227,13 @@ img
   border-radius: 5px
   width: 3cm
   height: 3cm
+
+.hoverable-input
+  border: 0
+
+  &:hover, &:focus
+    border: 1px solid lightgray
+
+.right-answer
+  border: 1px solid lightgreen
 </style>

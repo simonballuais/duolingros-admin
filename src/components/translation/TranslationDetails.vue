@@ -7,6 +7,8 @@
                    @keyup="$emit('change')"
                    bold
                    :style="{'background-color': translation.text ? 'transparent' : 'pink'}"
+                   class="hoverable-input"
+                   :tabindex="tabIndexRoot * 10"
                    />
       </div>
 
@@ -15,6 +17,7 @@
                 class="btn btn-outline-danger remove-translation"
                 @click="$emit('removeRequest', this)"
                 spinWhenClicked
+                tabindex="-1"
                 >
           X
         </Button>
@@ -38,13 +41,16 @@
                      v-model="translation.answers[index]"
                      :small="true"
                      @keyup="$emit('change')"
-                   :style="{'background-color': translation.answers[index] ? 'transparent' : 'pink'}"
+                     :style="{'background-color': translation.answers[index] ? 'transparent' : 'pink'}"
+                     class="hoverable-input"
+                     :tabindex="tabIndexRoot * 10 + index + 1"
                      />
           <div class="input-group-append">
             <Button type="button"
                     class="btn btn-outline-danger remove-answer"
                     @click="removeAnswer(index)"
                     v-if="translation.answers.length > 1"
+                    tabindex="-1"
                     >
               X
             </Button>
@@ -61,7 +67,7 @@ import Button from '../form/Button'
 
 export default {
   name: 'TranslationDetails',
-  props: ['translation'],
+  props: ['translation', 'tabIndexRoot'],
   components: {
     TextInput,
     Button,
@@ -110,4 +116,11 @@ ul:hover
 
     &.answer .add-answer
       margin-right: 4px
+
+.hoverable-input
+  border: 0
+
+  &:hover, &:focus
+    border: 1px solid lightgray
+
 </style>

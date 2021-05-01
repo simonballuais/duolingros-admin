@@ -17,12 +17,14 @@
               requiresConfirmation
               style="width: 180px;"
               v-if="difficulty < 5"
+              tabindex="-1"
               >
           CP to next
       </Button>
         &nbsp;
       <Button class="btn btn-outline-danger"
               @click="deleteAllOfDifficulty(difficulty)"
+              tabindex="-1"
               requiresConfirmation
               >
         <font-awesome-icon icon="trash" />
@@ -49,6 +51,7 @@
                             :translation="translation"
                             @change="$emit('change')"
                             @removeRequest="removeTranslation(translation.id)"
+                            :tabIndexRoot="(100 * (1 + difficulty)) + translationIndex + 1"
         />
 
       </transition-group>
@@ -76,6 +79,7 @@
                             :question="question"
                             @change="$emit('change')"
                             @removeRequest="removeQuestion(question.id)"
+                            :tabIndexRoot="(100 * (1 + difficulty)) + getTranslationsOfDifficulty(difficulty).length + 1 + questionIndex"
         />
       </transition-group>
 
