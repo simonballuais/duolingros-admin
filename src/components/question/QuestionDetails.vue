@@ -61,7 +61,7 @@
                      @keyup="$emit('change')"
                      type="text"
                      small
-                     class="hoverable-input"
+                     class="hoverable-input proposition-text"
                      :class="{'right-answer': proposition.rightAnswer}"
                      :tabindex="tabIndexRoot * 10 + index + 1"
                      />
@@ -210,6 +210,9 @@ ul
         &.add-proposition
           width: 32px
 
+.proposition-text
+  margin-left: 48px
+
 ul:hover
   li
     &.proposition
@@ -222,6 +225,9 @@ ul:hover
     &.proposition .add-proposition
       margin-right: 4px
 
+    .proposition-text
+      margin-left: 12px
+
 img
   margin: 3px 3px 3px 20px
   border-radius: 5px
@@ -229,7 +235,7 @@ img
   height: 3cm
 
 .hoverable-input
-  border: 0
+  border: 1px solid transparent
 
   &:hover, &:focus
     border: 1px solid lightgray
