@@ -58,7 +58,10 @@
                      @keyup="$emit('change')"
                      type="text"
                      small
-                     :style="{'background-color': proposition.text ? 'white' : 'pink'}"
+                     :style="{
+                        'background-color': proposition.text ? 'white' : 'pink',
+                        'border': proposition.rightAnswer ? '2px solid lightgreen' : '1px solid lightgray'
+                     }"
                      />
 
           <TextInput placeholder="Text"
@@ -70,14 +73,9 @@
                      small
                      />
 
-          <img :src="proposition.image" 
+          <img :src="proposition.image"
                      v-if="!question.noPictures"
           />
-
-          <Checkbox v-model="proposition.rightAnswer"
-                    @keyup="$emit('change')"
-                    @input="$emit('change')"
-                    />
 
           <div style="width: 34px">
             <Button type="button"

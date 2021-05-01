@@ -125,10 +125,14 @@ div.difficulty-group
 button.save
   position: fixed
   right: 15px
+  background: white
+  z-index: 1000
 
 button.undo
   position: fixed
   right: 65px
+  background: white
+  z-index: 1000
 
 .title
   margin-right: 100px

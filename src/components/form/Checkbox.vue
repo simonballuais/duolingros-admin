@@ -7,6 +7,7 @@
            @keyup="$emit('keyup', value)"
            :class="{ big, small }"
            :checked="value"
+           :disabled="disabled"
            >
   </div>
 </template>
@@ -25,6 +26,10 @@ export default {
       default: false,
     },
     'big': {
+      type: Boolean,
+      default: false,
+    },
+    'disabled': {
       type: Boolean,
       default: false,
     },
